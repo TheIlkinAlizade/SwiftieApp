@@ -12,10 +12,10 @@ const Homepage = ({token}) => {
     }
 
     return (
-        <div>
-            Welcome back, {token.user.user_metadata.full_name}
-            <button onClick={handleLogout}>LogOut</button>
+        <div className='home'>
+            <p className='userwelcome'>Welcome back, {token.user.user_metadata.full_name}</p>
             <Link to='/search'>Search</Link>
+            <button className='logoutbtn' onClick={handleLogout}>LogOut</button>
         </div>
     );
 }

@@ -35,7 +35,6 @@ function App() {
         <Route path='/register' element={<SignUp />} />
         <Route path='/login' element={<Login setToken={setToken} />} />
         <Route path='/search' element={<Search token={token} />} />
-        <Route path='/search_albom' element={<SearchAlbum token={token} />} />
         <Route path='/favorites' element={<Favorites token={token} />} />
         {token ? <Route path='/home' element={<Homepage token={token} />} /> : <Route path='/*' element={<DefaultPage />} />}
       </Routes>

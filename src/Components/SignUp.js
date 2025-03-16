@@ -39,8 +39,9 @@ const SignUp = () => {
   }
 
   return (
-    <div>
+    <div className='signform'>
       <form onSubmit={handleSubmit}>
+        <h1>Register</h1>
         <input
          placeholder='Full name'
          name='fullname'
@@ -59,9 +60,9 @@ const SignUp = () => {
          onChange={handleChange}
          type='password'
          />
-         <button type='submit'>Submit</button>
+        <p>Already have an account? <Link to='/login'>Login</Link></p>
+         <button type='submit'>Sign Up</button>
       </form>
-      <p>Already have an account?<Link to='/login'>Login</Link></p>
     </div>
   );
 }

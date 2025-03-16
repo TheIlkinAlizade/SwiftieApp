@@ -39,8 +39,9 @@ const Login = ({setToken}) => {
   }
 
   return (
-    <div>
+    <div className='signform'>
       <form onSubmit={handleSubmit}>
+        <h1>Login</h1>
         <input
          placeholder='Email'
          name='email'
@@ -53,9 +54,9 @@ const Login = ({setToken}) => {
          onChange={handleChange}
          type='password'
          />
-         <button type='submit'>Submit</button>
+         <p>Don't have an account? <Link to='/register'>Register</Link></p>
+         <button type='submit'>Sign in</button>
       </form>
-      <p>Don't have an account?<Link to='/register'>register</Link></p>
     </div>
   );
 }
