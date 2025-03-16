@@ -15,6 +15,7 @@ const Homepage = ({token}) => {
         <div>
             Welcome back, {token.user.user_metadata.full_name}
             <button onClick={handleLogout}>LogOut</button>
+            <Link to='/search'>Search</Link>
         </div>
     );
 }
