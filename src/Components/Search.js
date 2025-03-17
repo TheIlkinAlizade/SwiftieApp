@@ -2,6 +2,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, InputGroup, FormControl, Button, Row, Card, Col } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import { supabase } from '../client';
+import { Link } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+
 
 const CLIENT_ID = "1897d479bee342eea779fa4e8d15dbc6";
 const CLIENT_SECRET = "24f4169858604c26b45b579fc2e926f4";
@@ -17,7 +20,9 @@ const Search = ({ token }) => {
   const [displayedArtists, setDisplayedArtists] = useState(4);
   const [displayedTracks, setDisplayedTracks] = useState(4);
   const [displayedAlbums, setDisplayedAlbums] = useState(4);
-
+  const location = useLocation();  // Get location from the router
+  const query = new URLSearchParams(location.search).get('q'); // Extract search query from URL
+  
   useEffect(() => {
     async function fetchAccessToken() {
       const res = await fetch('https://accounts.spotify.com/api/token', {
@@ -31,7 +36,13 @@ const Search = ({ token }) => {
 
     fetchAccessToken();
   }, []);
-
+  useEffect(() => {
+    if (query, accessToken) {
+      console.log("FOUND");
+      setSearchInput(query); // Set search input based on URL query
+      searchWithInput(query); // Perform search when component mounts with query parameter
+    }
+  }, [query, accessToken]);
   useEffect(() => {
     async function fetchFavorites() {
       if (!token || !token.user) return;
@@ -55,7 +66,9 @@ const Search = ({ token }) => {
     fetchFavorites();
   }, [token]);
 
-  async function search() {
+  async function search(e) {
+    e.preventDefault();
+    
     if (!searchInput) return;
 
     console.log("Searching for " + searchInput);
@@ -82,6 +95,33 @@ const Search = ({ token }) => {
       console.error("Error fetching data from Spotify:", error);
     }
   }
+  async function searchWithInput(searchText) {
+    if (!searchText) return;
+
+    console.log("Searching for " + searchText);
+    const searchParams = {
+      method: 'GET',
+      headers: { 'Authorization': `Bearer ${accessToken}` },
+    };
+
+    try {
+      const artistResponse = await fetch(`https://api.spotify.com/v1/search?q=${searchText}&type=artist`, searchParams);
+      const artistData = await artistResponse.json();
+      const filteredArtists = artistData.artists.items.filter(artist =>
+        artist.name.toLowerCase().includes(searchText.toLowerCase())
+      );
+      setArtists(filteredArtists);
+
+      const trackResponse = await fetch(`https://api.spotify.com/v1/search?q=${searchText}&type=track`, searchParams);
+      const trackData = await trackResponse.json();
+      setTracks(trackData.tracks.items);
+      const albumResponse = await fetch(`https://api.spotify.com/v1/search?q=${searchText}&type=album`, searchParams);
+      const albumData = await albumResponse.json();
+      setAlbums(albumData.albums.items);
+    } catch (error) {
+      console.error("Error fetching data from Spotify:", error);
+    }
+  }
 
   async function addTrackToFavorites(trackId, trackName) {
     if (!token) {
@@ -96,7 +136,7 @@ const Search = ({ token }) => {
     if (error) {
       console.error("Error adding favorite track:", error.message);
     } else {
-      alert(`Added ${trackName} to favorites!`);
+      // alert(`Added ${trackName} to favorites!`);
       setFavoriteTrackIds((prev) => [...prev, trackId]);
     }
   }
@@ -114,108 +154,129 @@ const Search = ({ token }) => {
     if (error) {
       console.error("Error adding favorite album:", error.message);
     } else {
-      alert(`Added ${albumName} to favorites!`);
+      // alert(`Added ${albumName} to favorites!`);
       setFavoriteAlbumIds((prev) => [...prev, albumId]);
     }
   }
 
   return (
-    <Container>
-      <InputGroup className='mb-3' size='lg'>
-        <FormControl
-          placeholder='Search For Artist, Track, or Album'
-          onKeyPress={event => event.key === "Enter" && search()}
-          onChange={event => setSearchInput(event.target.value)}
-        />
-        <Button onClick={search}>Search</Button>
-      </InputGroup>
+    <div className='containerItems'>
+      <div className='navbar'>
+        <div className='links'>
+          <button>
+            <Link to='/home'>
+              <i class='bx bx-home-alt' ></i>
+            </Link>
+          </button>
+          <button>
+            <Link to='/favorites'>
+              <i class='bx bx-library' ></i>
+            </Link>
+          </button>
+        </div>
+        <form>
+          <div className='search-bar'>
+            <input
+              placeholder='Search For Artist, Track, or Album'
+              onKeyPress={event => {
+                if (event.key === "Enter") {
+                  search(event);  // Pass the event object here
+                }
+              }}
+              onChange={event => setSearchInput(event.target.value)}
+              />
+            <button onClick={search}><i className='bx bx-search-alt-2' ></i></button>
+          </div>
+        </form>
+      </div>
+
 
       {/* Artists Section */}
-      <Row className='mx-2'>
-        <h3>Artists</h3>
+      <h3>Artists</h3>
+      <div className='cards'>
         {artists.length === 0 ? (
           <p>No artists found. Try another search!</p>
         ) : (
           artists.slice(0, displayedArtists).map((artist) => (
-            <Col key={artist.id} xs={12} sm={6} md={4} lg={3}>
-              <Card style={{ margin: '10px', padding: '10px' }}>
-                <Card.Img src={artist.images[0]?.url} />
-                <Card.Body>
-                  <Card.Title>{artist.name}</Card.Title>
-                </Card.Body>
-              </Card>
-            </Col>
+            <div key={artist.id} className='card'>
+                <img src={artist.images[0]?.url} />
+                <div className='details'>
+                  <p className='artist'>{artist.name}</p>
+                </div>
+            </div>
           ))
         )}
-      </Row>
+      </div>
       {artists.length > displayedArtists && (
-        <Button onClick={() => setDisplayedArtists(displayedArtists + 4)}>
-          Add More Artists
-        </Button>
+        <div className='loadmorefield'>
+          <button className='loadMore' onClick={() => setDisplayedArtists(displayedArtists + 4)}>
+            Add More Artists
+          </button>
+        </div>
       )}
 
       {/* Tracks Section */}
-      <Row className='mx-2'>
-        <h3>Tracks</h3>
+      <h3>Tracks</h3>
+      <div className='cards'>
         {tracks.length === 0 ? (
           <p>No tracks found. Try another search!</p>
         ) : (
           tracks.slice(0, displayedTracks).map((track) => (
-            <Col key={track.id} xs={12} sm={6} md={4} lg={3}>
-              <Card style={{ margin: '10px', padding: '10px' }}>
-                <Card.Img src={track.album.images[0]?.url} />
-                <Card.Body>
-                  <Card.Title>{track.name}</Card.Title>
-                  <Button
-                    variant="success"
+            <div key={track.id} className='card'>
+                <img src={track.album.images[0]?.url} />
+                <div className='details'>
+                  <p className='artist'>{track.name}</p>
+                  <p>{track.artists[0].name}</p>
+                  <button
                     onClick={() => addTrackToFavorites(track.id, track.name)}
                     disabled={favoriteTrackIds.includes(track.id)}
                   >
-                    {favoriteTrackIds.includes(track.id) ? 'Added to Favorites' : 'Add to Favorites'}
-                  </Button>
-                </Card.Body>
-              </Card>
-            </Col>
+                    {favoriteTrackIds.includes(track.id) ? <i className='bx bxs-heart'></i> : <i className='bx bx-heart' ></i>}
+                  </button>
+                </div>
+            </div>
           ))
         )}
-      </Row>
+      </div>
       {tracks.length > displayedTracks && (
-        <Button onClick={() => setDisplayedTracks(displayedTracks + 4)}>
-          Add More Tracks
-        </Button>
+        <div className='loadmorefield'>
+          <button className='loadMore' onClick={() => setDisplayedTracks(displayedTracks + 4)}>
+            Add More Tracks
+          </button>
+        </div>
       )}
 
       {/* Albums Section */}
-      <Row className='mx-2'>
-        <h3>Albums</h3>
+      <h3>Albums</h3>
+      <div className='cards'>
         {albums.length === 0 ? (
           <p>No albums found. Try another search!</p>
         ) : (
           albums.slice(0, displayedAlbums).map((album) => (
-            <Col key={album.id} xs={12} sm={6} md={4} lg={3}>
-              <Card style={{ margin: '10px', padding: '10px' }}>
-                <Card.Img src={album.images[0]?.url} />
-                <Card.Body>
-                  <Card.Title>{album.name}</Card.Title>
-                  <Button
+            <div key={album.id} className='card albom'>
+                <img src={album.images[0]?.url} />
+                <div className='details'>
+                  <p>{album.name}</p>
+                  <button
                     variant="success"
                     onClick={() => addAlbumToFavorites(album.id, album.name)}
                     disabled={favoriteAlbumIds.includes(album.id)}
                   >
-                    {favoriteAlbumIds.includes(album.id) ? 'Added to Favorites' : 'Add to Favorites'}
-                  </Button>
-                </Card.Body>
-              </Card>
-            </Col>
+                    {favoriteAlbumIds.includes(album.id) ? <i className='bx bxs-heart'></i> : <i className='bx bx-heart' ></i>}
+                  </button>
+                </div>
+            </div>
           ))
         )}
-      </Row>
+      </div>
       {albums.length > displayedAlbums && (
-        <Button onClick={() => setDisplayedAlbums(displayedAlbums + 4)}>
-          Add More Albums
-        </Button>
+        <div className='loadmorefield'>
+          <button className='loadMore' onClick={() => setDisplayedAlbums(displayedAlbums + 4)}>
+            Add More Albums
+          </button>
+        </div>
       )}
-    </Container>
+    </div>
   );
 };
 

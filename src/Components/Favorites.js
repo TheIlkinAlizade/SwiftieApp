@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { supabase } from "../client";
 import { Container, Card, Row, Button } from "react-bootstrap";
+import Navbar from "./Navbar";
 
 const CLIENT_ID = "1897d479bee342eea779fa4e8d15dbc6";
 const CLIENT_SECRET = "24f4169858604c26b45b579fc2e926f4";
@@ -123,41 +124,42 @@ const Favorites = ({ token }) => {
   }
 
   return (
-    <Container>
+    <div className="containerItems">
+      <Navbar></Navbar>
       <h2>{token?.user?.user_metadata?.full_name}'s Favorites</h2>
 
-      <h3>Favorite Albums</h3>
-      <Row className="mx-2 row row-cols-4">
+      <h3 className="titleFav">Favorite Albums</h3>
+      <div className="cards">
         {favorites.albums.map((album) => (
-          <Card key={album.id} style={{ margin: "10px", padding: "10px" }}>
-            <Card.Img variant="top" src={album.images[0]?.url} alt={album.name} />
-            <Card.Body>
-              <Card.Title>{album.name}</Card.Title>
-              <Card.Text>{album.artists[0]?.name}</Card.Text>
-              <Button variant="danger" onClick={() => removeFromFavorites(album.id, "album")}>
-                Remove
-              </Button>
-            </Card.Body>
-          </Card>
+          <div className="card" key={album.id} style={{ margin: "10px", padding: "10px" }}>
+            <img src={album.images[0]?.url} alt={album.name} />
+            <div className="details">
+              <p className="artist">{album.artists[0]?.name}</p>
+              <p>{album.name}</p>
+              <button onClick={() => removeFromFavorites(album.id, "album")}>
+                <i class='bx bxs-heart'></i>
+              </button>
+            </div>
+          </div>
         ))}
-      </Row>
+      </div>
 
-      <h3>Favorite Tracks</h3>
-      <Row className="mx-2 row row-cols-4">
+      <h3 className="titleFav">Favorite Tracks</h3>
+      <div className="cards">
         {favorites.tracks.map((track) => (
-          <Card key={track.id} style={{ margin: "10px", padding: "10px" }}>
-            <Card.Img variant="top" src={track.album?.images[0]?.url} alt={track.name} />
-            <Card.Body>
-              <Card.Title>{track.name}</Card.Title>
-              <Card.Text>{track.artists?.map((artist) => artist.name).join(", ")}</Card.Text>
-              <Button variant="danger" onClick={() => removeFromFavorites(track.id, "track")}>
-                Remove
-              </Button>
-            </Card.Body>
-          </Card>
+          <div className="card" key={track.id} style={{ margin: "10px", padding: "10px" }}>
+            <img src={track.album?.images[0]?.url} alt={track.name} />
+            <div className="details">
+              <p>{track.name}</p>
+              <p className="artist">{track.artists?.map((artist) => artist.name).join(", ")}</p>
+              <button onClick={() => removeFromFavorites(track.id, "track")}>
+                <i className='bx bxs-heart'></i>
+              </button>
+            </div>
+          </div>
         ))}
-      </Row>
-    </Container>
+      </div>
+    </div>
   );
 };
 

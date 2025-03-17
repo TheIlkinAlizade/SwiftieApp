@@ -1,3 +1,5 @@
+@import url('https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css');
+
 .App {
   text-align: center;
 }
@@ -35,4 +37,199 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+
+.containerItems{
+  background-color: #121212;
+  color: #fff;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  overflow-y: scroll;
+}
+.containerItems .titleFav{
+  width: 80%;
+}
+
+
+.cards{
+  width: 80%;
+  height: 100%;
+  display: flex;
+  justify-content: start;
+  align-items: start;
+  flex-wrap: wrap;
+}
+.cards .card{
+  width: 180px;
+  height: 270px;
+  margin: 10px;
+  transition: 0.4s all;
+  background-color:#121212;
+  cursor: pointer;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 12px;
+  padding: 10px;
+  border: 1px solid transparent;
+}
+.cards .albom{
+  width: 200px;
+  height: 220px;
+  padding: 10px;
+}
+.cards .card:hover{
+  background-color: #1f1f1f;
+}
+.cards .card img{
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+}
+.cards .card .details{
+  width: 100%;
+  height: 110px;
+  display: flex;
+  justify-content: start;
+  align-items: start;
+  flex-direction: column;
+  position: relative;
+  color: #b3b3b3;
+}
+.cards .card .details p{
+  margin: 2px 0px;
+  width: 100%;
+}
+.cards .card .details .artist{
+  color: #fff;
+}
+.cards .card button{
+  position: absolute;
+  right: 0;
+  top: 0px;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px;
+  color: red;
+  background-color: transparent;
+  border: 2px solid transparent;
+  border-radius: 50%;
+  transition: 0.3s all;
+  opacity: 0;
+}
+.cards .card:hover button{
+  opacity: 1;
+  top: -20px;
+}
+
+.containerItems .navbar{
+  width: 100vw;
+  height: 64px;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  background-color: #000;
+  flex-direction: row;
+}
+.containerItems .navbar .links{
+  width: 10%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.containerItems .navbar .links button{
+  width: 49px;
+  height: 49px;
+  margin: 8px;
+  background-color: #1f1f1f;
+  border: none;
+  border-radius: 50%;
+  color: #b3b3b3;
+}
+.containerItems .navbar .links button a{
+  color: #b3b3b3;
+  text-decoration: none;
+  font-size: 25px;
+}
+.containerItems form{
+  width: 90%;
+  height: 100%;
+  background-color: transparent;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  position: relative;
+  background-color: #000;
+}
+.containerItems form .search-bar{
+  width: 480px;
+  height: 48px;
+  border: 1px solid transparent;
+  outline: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  
+}
+.containerItems form input{
+  width: 480px;
+  height: 48px;
+  border-radius: 500px;
+  padding: 5px 15px 5px 55px;
+  border: 2px solid transparent;
+  outline: none;
+  color: #b3b3b3;
+  background-color: #1f1f1f;
+  font-weight: 400;
+  transition: 0.4s all;
+}
+.containerItems form input:active{
+  border: 2px solid #fff;
+}
+.containerItems form button{
+  height: 100%;
+  aspect-ratio: 1/1;
+  font-size: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  bottom: 0;
+  left: 2px;
+  background-color: transparent;
+  outline: none;
+  border: none;
+  color: #b3b3b3;
+}
+.loadmorefield{
+  width: 100vw;
+  min-height: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+.loadmorefield .loadMore{
+  border: 1px solid transparent;
+  background-color: transparent;
+  outline: none;
+  color: #b3b3b3;
+  width: 200px;
+  height: 50px;
+  margin: 20px;
+  position: absolute;
+  right: 10%;
+  bottom: 0;
 }
