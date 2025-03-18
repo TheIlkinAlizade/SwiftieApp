@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { supabase } from "../client";
 import { Container, Card, Row, Button } from "react-bootstrap";
 
-const CLIENT_ID = "1897d479bee342eea779fa4e8d15dbc6";
-const CLIENT_SECRET = "24f4169858604c26b45b579fc2e926f4";
+const CLIENT_ID = "5ed04eb65f1e4eb9bf0de8ec5418111f";
+const CLIENT_SECRET = "d9785a1ad1e246edb7480e256469671c";
 
 const FavoriteAlboms = ({ token }) => {
   const [favorites, setFavorites] = useState([]);

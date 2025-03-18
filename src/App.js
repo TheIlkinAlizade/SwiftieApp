@@ -12,6 +12,10 @@ import Homepage from './Components/Homepage';
 import DefaultPage from './Components/DefaultPage';
 import Favorites from './Components/Favorites';
 import Search from './Components/Search';
+import store from './redux/store';
+import AdminPanel from './Components/AdminPanel';
+import MusicShop from './Components/MusicShop';
+import { Provider } from 'react-redux';
 
 function App() {
   const [token, setToken] = useState(false);
@@ -30,6 +34,8 @@ function App() {
   console.log(token);
 
   return (
+    <Provider store={store}>
+
     <Router>
       <Routes>
         <Route path='/register' element={<SignUp />} />
@@ -37,8 +43,12 @@ function App() {
         <Route path='/search' element={<Search token={token} />} />
         <Route path='/favorites' element={<Favorites token={token} />} />
         {token ? <Route path='/home' element={<Homepage token={token} />} /> : <Route path='/*' element={<DefaultPage />} />}
+        <Route path="/admin" element={<AdminPanel />} />
+        <Route path="/home" element={<Homepage token={token} />} />
+        <Route path="/musicshop" element={<MusicShop />} />
       </Routes>
     </Router>
+    </Provider>
   );
 }
 
