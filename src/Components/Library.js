@@ -88,67 +88,61 @@ const Library = ({ token }) => {
     }
   }
   return (
-    <Container>
-      <h3>Available Music Items</h3>
-      <Row>
+    <>
+      <h3>Music Shop</h3>
+      <div className='cards'>
         {musicItems.length === 0 ? (
           <p>No music items found.</p>
         ) : (
           musicItems.map((item) => (
-            <Col key={item.id} sm={12} md={6} lg={4}>
-              <Card className="mb-4 card">
-                <Card.Img variant="top" src={item.image_url} />
-                <Card.Body>
-                  <Card.Title>{item.name}</Card.Title>
-                  <Card.Text>{item.description}</Card.Text>
-                  <Card.Text>
+            <div key={item.id} className='card'>
+                <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwcHBwgHBw0HBwcHBw0HBwcHBw8IDQcNFREWFhURExMYHSggGBoxGxUfITEhJSkrLi4uFx8zODMsNygtLisBCgoKDQ0NDg0NDysZFRk3Ny03Ny0rKy0rKzctKzcrLSsrKy0rKysrKystLSsrKy0rKystKy0rKysrKysrKysrK//AABEIAOEA4QMBIgACEQEDEQH/xAAYAAEBAQEBAAAAAAAAAAAAAAACAQADBv/EABYQAQEBAAAAAAAAAAAAAAAAAAABEf/EABkBAQEBAQEBAAAAAAAAAAAAAAEAAgMHBv/EABYRAQEBAAAAAAAAAAAAAAAAAAABEf/aAAwDAQACEQMRAD8A9ozM8vfTMzMkzKqCKy4AmLi4uIamNi4uJaOMWNgGjjYeJiWjjYWNhOhiYeJiWihYiIsSEozMizMyTMzJMzMkysqDLjRcAbFxcWQM6mLi4uIamNhYuIaONhY2AaONhY2JaGNh4mE6GJh4mI6GIeJiOhiHRJFCQtIzMizMyTKhRBosaLAGhSNIUgZSQpGkKRM2pi4shYNZ0cXCxcGjRxsLFxDQxsPExLQxMdMTEdc7EsdMGw6dCxLDsGwtShYlh2DU0FSnRpIoVSlpGZkVixosDKwokKBmtIUjQpEza0hSNIUjLFqSFI0hSBnUxcKRcA0cbDxsQ0MbDxsS1zxLHTExHXOxLDsSwnXOwbHSwbC1KFg2HYNablCjTo1NQaNKpS0LKxKwokKBmrCiQoGasKJDgrFaQpGhSMsVpCkaQpAza0iyLIsgZ1MbCxcTOhjYeJiWhiWOmDYmtc7EsOwbC1KFg2HYNhagWBXSjWo3HOjTo0twKlKjS1ERWRKFBhRClCgw4GKsODDjLFWFEhxlirCkSFAxVkWRpCgYtTFxcXANHGwsTEtCxLDqUlzsGulClqBRp0aXSOdGnQrTUCjTo1p0gUaVGlqIzMmlhQYUTNOFBhQMU4UGHGWKUKDDjLFKFBhwOdWFEhRlmquNFTKISUIaNKjS1Ao06NaagUKdGl0gUKdCluBRp0K03BoU6NLcFlYlocCFEKcKDCjLFOFBhQMU4cCFGWKcOBCgc6cKDFjLNOKMVMqlbUoSUaVGlqDRpUKWoNGlQrTpBoU6FLcGhSo1puDRpUKW4zIxKwoMKJUocCFAxThxzhxmsU4cc4cZYpwoEKUMU4UCUpQwcraOtoGFraOtqWNUrWjaTGo1qNpaiUatGluDQpUa03Bo1aNadINGlRpaiMzItCgxYlThQIUDNOHHOHKKxTlKUIUrLFOU5XOUpQzYcpSucq6GMPV0NXUMLW0dTUsK0bU1LUcW0bWtG0tSNQtW0bS3Eo1aNajcShVo0txKNWpS1EZmRaLBhRIoUCFAzThShKsqZsdJSlc5SlZYsdJVlCVZQzjpKuhKugYetoauoYWto6mpYWpampqWLaNqWpaWsa0bWtG0tSNaNW0bS1IlGrRpbjUatGlpmRiWIVSKFAWBk4UoSrKAcpShKsqZsdJV1z0tGM4eroa2hnHTW0NbQsPW0NbUsLU0dbSsXUtTUtONY1qWpalpaka0bWtSpqNRq0SY1RkLTMzIszMkqwVQKEC6GTlWUF0DD1dDV1DD1dDV1DC1dDW0DD1NHW1LC1NTU0nC0dTU1HF1LU1NRxdG1tQlkZC0zMyLMzJMzMkzMySqKoFraKgFq6OtqGHraOtqGHraGroWFraOpqWFraOtpWLqamtqOLqaiIqjISzMyLMzJMzMkzMyTMzJM0ZkmVmQWMzALGZkmVmQZGZJmZkkasyKIzEtWZkWZmSZmZJmZkn/2Q==" />
+                <div className='details'>
+                  <p>{item.name}</p>
+                  <p>{item.description}</p>
+                  <p>
                     <strong>Price:</strong> ${item.price}
-                  </Card.Text>
-                  <Button
-                    variant="primary"
+                  </p>
+                  <button
                     onClick={() => addMusicItemToLibrary(item.id)}
                     disabled={userLibrary.includes(item.id)}
                   >
-                    {userLibrary.includes(item.id) ? 'Already in Library' : 'Add to Library'}
-                  </Button>
-                </Card.Body>
-              </Card>
-            </Col>
+                    {userLibrary.includes(item.id) ? <i class='bx bxs-cart' ></i> : <i class='bx bx-cart'></i>}
+                  </button>
+                </div>
+            </div>
           ))
         )}
-      </Row>
+      </div>
 
-      <h3>Your Music Library</h3>
-      <Row>
+      <h3>{token?.user?.user_metadata?.full_name}'s Cart:</h3>
+      <div className='cards'>
         {userLibrary.length === 0 ? (
-          <p>Your library is empty. Add some music items!</p>
+          <p>Your Cart is Empty!</p>
         ) : (
           userLibrary.map((musicId) => {
             const musicItem = musicItems.find((item) => item.id === musicId);
             return (
-              <Col key={musicId} sm={12} md={6} lg={4}>
-                <Card className="mb-4">
-                  <Card.Img variant="top" src={musicItem?.image_url} />
-                  <Card.Body>
-                    <Card.Title>{musicItem?.name}</Card.Title>
-                    <Card.Text>{musicItem?.description}</Card.Text>
-                    <Card.Text>
+              <div key={musicId} className='card'>
+                  <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwcHBwgHBw0HBwcHBw0HBwcHBw8IDQcNFREWFhURExMYHSggGBoxGxUfITEhJSkrLi4uFx8zODMsNygtLisBCgoKDQ0NDg0NDysZFRk3Ny03Ny0rKy0rKzctKzcrLSsrKy0rKysrKystLSsrKy0rKystKy0rKysrKysrKysrK//AABEIAOEA4QMBIgACEQEDEQH/xAAYAAEBAQEBAAAAAAAAAAAAAAACAQADBv/EABYQAQEBAAAAAAAAAAAAAAAAAAABEf/EABkBAQEBAQEBAAAAAAAAAAAAAAEAAgMHBv/EABYRAQEBAAAAAAAAAAAAAAAAAAABEf/aAAwDAQACEQMRAD8A9ozM8vfTMzMkzKqCKy4AmLi4uIamNi4uJaOMWNgGjjYeJiWjjYWNhOhiYeJiWihYiIsSEozMizMyTMzJMzMkysqDLjRcAbFxcWQM6mLi4uIamNhYuIaONhY2AaONhY2JaGNh4mE6GJh4mI6GIeJiOhiHRJFCQtIzMizMyTKhRBosaLAGhSNIUgZSQpGkKRM2pi4shYNZ0cXCxcGjRxsLFxDQxsPExLQxMdMTEdc7EsdMGw6dCxLDsGwtShYlh2DU0FSnRpIoVSlpGZkVixosDKwokKBmtIUjQpEza0hSNIUjLFqSFI0hSBnUxcKRcA0cbDxsQ0MbDxsS1zxLHTExHXOxLDsSwnXOwbHSwbC1KFg2HYNablCjTo1NQaNKpS0LKxKwokKBmrCiQoGasKJDgrFaQpGhSMsVpCkaQpAza0iyLIsgZ1MbCxcTOhjYeJiWhiWOmDYmtc7EsOwbC1KFg2HYNhagWBXSjWo3HOjTo0twKlKjS1ERWRKFBhRClCgw4GKsODDjLFWFEhxlirCkSFAxVkWRpCgYtTFxcXANHGwsTEtCxLDqUlzsGulClqBRp0aXSOdGnQrTUCjTo1p0gUaVGlqIzMmlhQYUTNOFBhQMU4UGHGWKUKDDjLFKFBhwOdWFEhRlmquNFTKISUIaNKjS1Ao06NaagUKdGl0gUKdCluBRp0K03BoU6NLcFlYlocCFEKcKDCjLFOFBhQMU4cCFGWKcOBCgc6cKDFjLNOKMVMqlbUoSUaVGlqDRpUKWoNGlQrTpBoU6FLcGhSo1puDRpUKW4zIxKwoMKJUocCFAxThxzhxmsU4cc4cZYpwoEKUMU4UCUpQwcraOtoGFraOtqWNUrWjaTGo1qNpaiUatGluDQpUa03Bo1aNadINGlRpaiMzItCgxYlThQIUDNOHHOHKKxTlKUIUrLFOU5XOUpQzYcpSucq6GMPV0NXUMLW0dTUsK0bU1LUcW0bWtG0tSNQtW0bS3Eo1aNajcShVo0txKNWpS1EZmRaLBhRIoUCFAzThShKsqZsdJSlc5SlZYsdJVlCVZQzjpKuhKugYetoauoYWto6mpYWpampqWLaNqWpaWsa0bWtG0tSNaNW0bS1IlGrRpbjUatGlpmRiWIVSKFAWBk4UoSrKAcpShKsqZsdJV1z0tGM4eroa2hnHTW0NbQsPW0NbUsLU0dbSsXUtTUtONY1qWpalpaka0bWtSpqNRq0SY1RkLTMzIszMkqwVQKEC6GTlWUF0DD1dDV1DD1dDV1DC1dDW0DD1NHW1LC1NTU0nC0dTU1HF1LU1NRxdG1tQlkZC0zMyLMzJMzMkzMySqKoFraKgFq6OtqGHraOtqGHraGroWFraOpqWFraOtpWLqamtqOLqaiIqjISzMyLMzJMzMkzMyTMzJM0ZkmVmQWMzALGZkmVmQZGZJmZkkasyKIzEtWZkWZmSZmZJmZkn/2Q==" />
+                  <div className='details'>
+                    <p>{musicItem?.name}</p>
+                    <p>{musicItem?.description}</p>
+                    <p>
                       <strong>Price:</strong> ${musicItem?.price}
-                    </Card.Text>
-                    <Button
-                    variant="danger"
+                    </p>
+                    <button
                     onClick={() => removeMusicItemFromLibrary(musicId)}
                     >
-                    Remove from Library
-                    </Button>
-                  </Card.Body>
-                </Card>
-              </Col>
+                    <i class='bx bx-x'></i>
+                    </button>
+                  </div>
+              </div>
             );
           })
         )}
-      </Row>
-    </Container>
+      </div>
+    </>
   );
 };
 
