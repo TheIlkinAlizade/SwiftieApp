@@ -5,7 +5,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import Navbar from './Navbar';
 import { useDispatch, useSelector } from "react-redux";
 import { setLoading, setError, setMusicItems, addMusicItem, updateMusicItem, deleteMusicItem } from "../redux/musicSlice";
-    
+import Library from './Library';
+
 const Homepage = ({token}) => {
     let navigate = useNavigate();
     const dispatch = useDispatch(); 
@@ -56,6 +57,7 @@ const Homepage = ({token}) => {
                     </div>
                 )}
             </div>
+            <Library token={token}></Library>
         </div>
     );
 }
