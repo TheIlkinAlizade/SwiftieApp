@@ -69,6 +69,24 @@ const Library = ({ token }) => {
       setUserLibrary((prev) => [...prev, musicId]);
     }
   }
+  async function removeMusicItemFromLibrary(musicId) {
+    if (!token) {
+      alert('You need to be logged in to remove items.');
+      return;
+    }
+  
+    const { error } = await supabase
+      .from('user_library')
+      .delete()
+      .eq('user_id', token.user.id)
+      .eq('music_id', musicId);
+  
+    if (error) {
+      console.error('Error removing music item from library:', error.message);
+    } else {
+      setUserLibrary((prev) => prev.filter((id) => id !== musicId));
+    }
+  }
   return (
     <Container>
       <h3>Available Music Items</h3>
@@ -117,6 +135,12 @@ const Library = ({ token }) => {
                     <Card.Text>
                       <strong>Price:</strong> ${musicItem?.price}
                     </Card.Text>
+                    <Button
+                    variant="danger"
+                    onClick={() => removeMusicItemFromLibrary(musicId)}
+                    >
+                    Remove from Library
+                    </Button>
                   </Card.Body>
                 </Card>
               </Col>
