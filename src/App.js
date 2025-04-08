@@ -22,6 +22,7 @@ import FAQPage from './Components/FAQPage';
 import AboutUsPage from './Components/AboutUsPage';
 import WishlistPage from './Components/WishlistPage';
 import CartPage from './Components/CartPage';
+import MusicDetails from './Components/MusicDetails';
 
 function App() {
   const [token, setToken] = useState(false);
@@ -56,7 +57,8 @@ function App() {
         <Route path="/admin" element={<AdminPanel />} />
         <Route path="/home" element={<Homepage token={token} />} />
         <Route path="/musicshop" element={<MusicShop />} />
-        <Route path="/userdetails" element={<UserDetailes />} />
+        <Route path="/userdetails" element={<UserDetailes token={token} />} />
+        <Route path="/music/:id" element={<MusicDetails />} />
       </Routes>
       <Footer />
     </Router>

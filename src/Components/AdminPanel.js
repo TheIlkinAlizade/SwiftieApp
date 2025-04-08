@@ -10,9 +10,9 @@ const AdminPanel = () => {
   const loading = useSelector((state) => state.music.loading);
   const error = useSelector((state) => state.music.error);
   const [darkMode, setDarkMode] = useState(localStorage.getItem("theme") === "dark");
-  const [formData, setFormData] = useState({ name: '', price: '', description: '' });
+  const [formData, setFormData] = useState({ name: '', price: '', description: '', longdescription: '', category: '' });
   const [editingItem, setEditingItem] = useState(null);
-  const [editFormData, setEditFormData] = useState({ name: "", price: "", description: "" });
+  const [editFormData, setEditFormData] = useState({ name: "", price: "", description: "", category: '' });
 
   useEffect(() => {
     
@@ -47,25 +47,25 @@ const AdminPanel = () => {
 
   const handleAddItem = async (e) => {
     e.preventDefault();
-    const { name, price, description } = formData;
+    const { name, price, description, longdescription, category } = formData;
 
     const { data, error } = await supabase
         .from('music_items')
-        .insert([{ name, price, description }])
+        .insert([{ name, price, description, longdescription, category }])
         .select();
 
     if (error) {
         console.error("Error adding item:", error.message);
     } else if (data && data.length > 0) {
         dispatch(addMusicItem(data[0]));
-        setFormData({ name: '', price: '', description: '' });
+        setFormData({ name: '', price: '', description: '', longdescription: '', category: '' });
     } else {
         console.error("Unexpected response: No data returned.");
     }
   };
 
   const handleUpdateItem = async (id) => {
-    const { name, price, description } = editFormData;
+    const { name, price, description, category } = editFormData;
     if (price === "" || isNaN(price)) {
         console.error("Invalid price value");
         return;
@@ -73,7 +73,7 @@ const AdminPanel = () => {
 
     const { data, error } = await supabase
       .from('music_items')
-      .update({ name, price: Number(price), description })
+      .update({ name, price: Number(price), description, category })
       .eq('id', id)
       .select();
 
@@ -105,7 +105,18 @@ const AdminPanel = () => {
         <p>Add new music</p>
         <input type="text" name="name" placeholder="Music Name" value={formData.name} onChange={handleChange} />
         <input type="number" name="price" placeholder="Price" value={formData.price} onChange={handleChange} />
+        <select name="category" value={formData.category} onChange={handleChange}>
+          <option value="">Select Category</option>
+          <option value="Pop">Pop</option>
+          <option value="Rock">Rock</option>
+          <option value="Jazz">Jazz</option>
+          <option value="Hip-Hop">Hip-Hop</option>
+          <option value="Electronic">Electronic</option>
+          <option value="Classical">Classical</option>
+          <option value="Other">Other</option>
+        </select>
         <input type="text" name="description" placeholder="Description" value={formData.description} onChange={handleChange} />
+        <input type="text" name="longdescription" placeholder="Long Description" value={formData.longdescription} onChange={handleChange} />
         <button className="adminBtn" type="submit"><i class='bx bx-plus-medical'></i></button>
       </form>
 
@@ -125,6 +136,16 @@ const AdminPanel = () => {
                   <input type="text" name="name" value={editFormData.name} onChange={handleEditChange} />
                   <input type="number" name="price" value={editFormData.price} onChange={handleEditChange} />
                   <input type="text" name="description" value={editFormData.description} onChange={handleEditChange} />
+                  <select name="category" value={editFormData.category} onChange={handleEditChange}>
+                    <option value="">Select Category</option>
+                    <option value="Pop">Pop</option>
+                    <option value="Rock">Rock</option>
+                    <option value="Jazz">Jazz</option>
+                    <option value="Hip-Hop">Hip-Hop</option>
+                    <option value="Electronic">Electronic</option>
+                    <option value="Classical">Classical</option>
+                    <option value="Other">Other</option>
+                  </select>
                 </>
               ) : (
                 <>
@@ -134,9 +155,8 @@ const AdminPanel = () => {
                     <button className="otherBtn" onClick={() => handleDeleteItem(item.id)}><i class='bx bxs-trash-alt' ></i></button>
                   </div>
                   <p className="artist itemdesc">{item.name}</p>
-                  <p className="artist">{item.description}</p>
+                  <p className="artist">{item.category}: {item.description}</p>
                   <p className="artist itemprice">Price: ${item.price}</p>
-
                   </div>
                 </>
               )}

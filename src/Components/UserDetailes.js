@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { supabase } from "../client";
-import { Link, useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom"; 
 import Navbar from "./Navbar";
+
 const UserDetailes = ({ token }) => {
-  const navigate = useNavigate(); 
-  const [username, setUsername] = useState("");
+  const navigate = useNavigate();
+  const [displayName, setDisplayName] = useState("");
   const [password, setPassword] = useState("");
   const [profilePicture, setProfilePicture] = useState("");
   const [darkMode, setDarkMode] = useState(localStorage.getItem("theme") === "dark");
@@ -15,19 +16,23 @@ const UserDetailes = ({ token }) => {
     async function fetchUserData() {
       if (!token || !token.user) return;
 
+      const user = token.user;
+
+      // Get auth metadata
+      setDisplayName(user.user_metadata?.full_name || "");
+
+      // Optionally, load extra info like profile picture from user_library
       const { data, error } = await supabase
-        .from("user")
-        .select("username, Pp")
-        .eq("user_id", token.user.id)
+        .from("user_library")
+        .select("Pp")
+        .eq("user_id", user.id)
         .single();
 
       if (error) {
-        console.error("Error fetching user data:", error.message);
-        return;
+        console.error("Error fetching profile picture:", error.message);
+      } else {
+        setProfilePicture(data?.Pp || "");
       }
-
-      setUsername(token?.user?.user_metadata?.full_name || "");
-      setProfilePicture(data?.Pp || ""); 
     }
 
     fetchUserData();
@@ -35,29 +40,41 @@ const UserDetailes = ({ token }) => {
 
   const handleSaveChanges = async () => {
     if (!token || !token.user) return;
+    const user = token.user;
 
-    const updates = { username, Pp: profilePicture };
+    // 1. Update display name
+    const { error: nameError } = await supabase.auth.updateUser({
+      data: { full_name: displayName },
+    });
 
+    if (nameError) {
+      console.error("Error updating name:", nameError.message);
+      return;
+    }
+
+    // 2. Update password if entered
     if (password) {
-      const { error } = await supabase.auth.updateUser({ password });
-      if (error) {
-        console.error("Error updating password:", error.message);
+      const { error: passError } = await supabase.auth.updateUser({ password });
+      if (passError) {
+        console.error("Error updating password:", passError.message);
         return;
       }
     }
 
-    const { error } = await supabase
+    // 3. Update profile picture in your custom user_library table
+    const { error: picError } = await supabase
       .from("user_library")
-      .update(updates)
-      .eq("user_id", token.user.id);
+      .update({ Pp: profilePicture })
+      .eq("user_id", user.id);
 
-    if (error) {
-      console.error("Error updating user details:", error.message);
+    if (picError) {
+      console.error("Error updating profile picture:", picError.message);
       return;
     }
 
     alert("Profile updated successfully!");
   };
+
   const handleLogout = () => {
     sessionStorage.removeItem('token');
     navigate('/login');
@@ -65,37 +82,33 @@ const UserDetailes = ({ token }) => {
 
   return (
     <div className='containerItems'>
-    <Navbar></Navbar>
-    <div className='links links2'>
-            <button className='logoutbtn' onClick={handleLogout}>
-                <a>
-                  <i class='bx bx-log-in-circle' ></i>
-                </a>
-            </button>
-    </div>
-    <div className={`user-detailes ${darkMode ? "dark" : "light"}`}>
-        
-      <h2>Profile Settings</h2>
+      <Navbar />
+      <div className='links links2'>
+        <button className='logoutbtn' onClick={handleLogout}>
+          <i className='bx bx-log-in-circle'></i>
+        </button>
+      </div>
 
-      <div className="form-group">
-        <label>Profile Picture URL:</label>
-        <input
-          type="text"
-          placeholder="Enter image URL"
-          value={profilePicture}
-          onChange={(e) => setProfilePicture(e.target.value)}
-        />
+      <div className={`user-detailes ${darkMode ? "dark" : "light"}`}>
+        <h2>{displayName}'s Settings</h2>
+        <div className="form-group">
+          <label>Display Name:</label>
+          <input
+            type="text"
+            value={displayName}
+            onChange={(e) => setDisplayName(e.target.value)}
+          />
+        </div>
+        <div className="form-group">
+          <label>New Password:</label>
+          <input
+            type="password"
+            placeholder="Enter new password"
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
+        <button onClick={handleSaveChanges} className="save-btn">Save Changes</button>
       </div>
-      <div className="form-group">
-        <label>Username:</label>
-        <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
-      </div>
-      <div className="form-group">
-        <label>New Password:</label>
-        <input type="password" placeholder="Enter new password" onChange={(e) => setPassword(e.target.value)} />
-      </div>
-      <button onClick={handleSaveChanges} className="save-btn">Save Changes</button>
-    </div>
     </div>
   );
 };
