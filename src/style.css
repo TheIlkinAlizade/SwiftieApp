@@ -1,0 +1,127 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+
+/* Default */
+.defaultPage{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+}
+
+.defaultPage a{
+    text-decoration: none;
+    color: black;
+    border: 1px solid white;
+    border-radius: 12px;
+    font-size: 25px;
+    padding: 12px 22px;
+    transition: 0.4s all;
+    outline: none;
+    background-color: white;
+}
+.defaultPage a:hover{
+    scale: 0.95;
+}
+.defaultPage a a{
+    border: none;
+}
+.defaultPage p{
+    font-size: 140px;
+    color: transparent;
+    -webkit-text-stroke: 1px white;
+}
+/* .defaultPage p span:nth-child(2){
+    color: yellow;
+    -webkit-text-stroke: 1px transparent;
+}
+.defaultPage p span:nth-child(3){
+    color: yellowgreen;
+    -webkit-text-stroke: 1px transparent;
+}
+.defaultPage p span:nth-child(4){
+    color: green;
+    -webkit-text-stroke: 1px transparent;
+} */
+
+.signform{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: black;
+}
+.signform form{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.signform form input{
+    margin: 10px;
+    border-radius: 5px;
+    outline: none;
+    border: 1px solid gray;
+    width: 300px;
+    height: 40px;
+    padding: 10px;
+    font-size: 20px;
+    color: white;
+    background-color: transparent;
+}
+.signform form button{
+    width: 150px;
+    height: 40px;
+    margin: 10px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: 0.3s all;
+}
+.signform form button:hover{
+    scale: 1.05;
+}
+.signform h1{
+    color: white;
+    font-size: 28px;
+}
+.signform p{
+    color: white;
+    font-size: 18px;
+}
+.signform p a{
+    text-decoration: none;
+    color: blue;
+}
+
+
+/* Home */
+
+.home{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: black;
+    color: white;
+}
+.home .userwelcome{
+    font-size: 18px;
+}
+.home .logoutbtn{
+    width: 100px;
+    height: 30px;
+    margin: 10px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: 0.3s all;
+}
