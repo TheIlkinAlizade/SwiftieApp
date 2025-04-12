@@ -5,10 +5,36 @@ import { useState, useEffect } from 'react';
 import { supabase } from '../client';
 import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
+import Navbar from './Navbar';
 
 
 const CLIENT_ID = "5ed04eb65f1e4eb9bf0de8ec5418111f";
 const CLIENT_SECRET = "d9785a1ad1e246edb7480e256469671c";
+
+const languages = {
+  az: {
+    artists: "Mügənnilər",
+    noArtists: "Heç bir müğənni tapılmadı. Yenidən yoxlayın!",
+    addArtists: "Daha çox müğənni",
+    tracks: "Mahnılar",
+    noTracks: "Heç bir mahnı tapılmadı. Yenidən yoxlayın!",
+    addTracks: "Daha çox mahnı",
+    alboms: "Albomlar",
+    noAlboms: "Heç bir albom tapılmadı. Yenidən yoxlayın!",
+    addAlboms: "Daha çox albom",
+  },
+  en: {
+    artists: "Artists",
+    noArtists: "No artists found. Try another search!",
+    addArtists: "Add More Artists",
+    tracks: "Tracks",
+    noTracks: "No tracks found. Try another search!",
+    addTracks: "Add More Tracks",
+    alboms: "Albums",
+    noAlboms: "No albums found. Try another search!",
+    addAlboms: "Add More Albums",
+  }
+};
 
 const Search = ({ token }) => {
   const [searchInput, setSearchInput] = useState("");
@@ -23,7 +49,11 @@ const Search = ({ token }) => {
   const [displayedAlbums, setDisplayedAlbums] = useState(4);
   const location = useLocation();  // Get location from the router
   const query = new URLSearchParams(location.search).get('q'); // Extract search query from URL
-  
+  const AzerbaijanLang = languages.az;  
+  const EnglishLang = languages.en;
+  const [language, setLanguage] = useState(() => sessionStorage.getItem('language') || 'AZ');
+  const [currentLang, setCurrentLang] = useState(language === "AZ" ? AzerbaijanLang : EnglishLang);
+
   useEffect(() => {
     async function fetchAccessToken() {
       const res = await fetch('https://accounts.spotify.com/api/token', {
@@ -162,41 +192,12 @@ const Search = ({ token }) => {
 
   return (
     <div className='containerItems'>
-      <div className='navbar'>
-        <div className='links'>
-          <button>
-            <Link to='/home'>
-              <i class='bx bx-home-alt' ></i>
-            </Link>
-          </button>
-          <button>
-            <Link to='/favorites'>
-              <i class='bx bx-library' ></i>
-            </Link>
-          </button>
-        </div>
-        <form>
-          <div className='search-bar'>
-            <input
-              placeholder='Search For Artist, Track, or Album'
-              onKeyPress={event => {
-                if (event.key === "Enter") {
-                  search(event);  // Pass the event object here
-                }
-              }}
-              onChange={event => setSearchInput(event.target.value)}
-              />
-            <button onClick={search}><i className='bx bx-search-alt-2' ></i></button>
-          </div>
-        </form>
-      </div>
+    <Navbar></Navbar>
 
-
-      {/* Artists Section */}
-      <h3>Artists</h3>
+      <h3>{currentLang.artists}</h3>
       <div className='cards'>
         {artists.length === 0 ? (
-          <p>No artists found. Try another search!</p>
+          <p>{currentLang.noArtists}</p>
         ) : (
           artists.slice(0, displayedArtists).map((artist) => (
             <div key={artist.id} className='card'>
@@ -211,16 +212,16 @@ const Search = ({ token }) => {
       {artists.length > displayedArtists && (
         <div className='loadmorefield'>
           <button className='loadMore' onClick={() => setDisplayedArtists(displayedArtists + 4)}>
-            Add More Artists
+            {currentLang.addArtists}
           </button>
         </div>
       )}
 
       {/* Tracks Section */}
-      <h3>Tracks</h3>
+      <h3>{currentLang.tracks}</h3>
       <div className='cards'>
         {tracks.length === 0 ? (
-          <p>No tracks found. Try another search!</p>
+          <p>{currentLang.noTracks}</p>
         ) : (
           tracks.slice(0, displayedTracks).map((track) => (
             <div key={track.id} className='card'>
@@ -242,16 +243,16 @@ const Search = ({ token }) => {
       {tracks.length > displayedTracks && (
         <div className='loadmorefield'>
           <button className='loadMore' onClick={() => setDisplayedTracks(displayedTracks + 4)}>
-            Add More Tracks
+            {currentLang.addTracks}
           </button>
         </div>
       )}
 
       {/* Albums Section */}
-      <h3>Albums</h3>
+      <h3>{currentLang.alboms}</h3>
       <div className='cards'>
         {albums.length === 0 ? (
-          <p>No albums found. Try another search!</p>
+          <p>{currentLang.noAlboms}</p>
         ) : (
           albums.slice(0, displayedAlbums).map((album) => (
             <div key={album.id} className='card albom'>
@@ -273,7 +274,7 @@ const Search = ({ token }) => {
       {albums.length > displayedAlbums && (
         <div className='loadmorefield'>
           <button className='loadMore' onClick={() => setDisplayedAlbums(displayedAlbums + 4)}>
-            Add More Albums
+            {currentLang.addAlboms}
           </button>
         </div>
       )}

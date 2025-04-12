@@ -13,8 +13,36 @@ import {
 } from 'lucide-react';
 import Navbar from './Navbar';
 
+
+const languages = {
+  az: {
+    activeUsers: "Aktiv istifadəçilər",
+    countries: "Ölkələr",
+    artists: "Müğənnilər",
+    tracks: "Mahnılar",
+    aboutDesc: "Qabaqcıl texnologiya, qlobal əlaqə və səs üçün sarsılmaz ehtiras vasitəsilə musiqi təcrübəsini dəyişdirən.",
+    exploreFeatures: "Kəşf Et",
+    coreCommitment: "Əsas Öhdəliklərimiz",
+  },
+  en: {
+    activeUsers: "Active Users",
+    countries: "Countries",
+    artists: "Artists",
+    tracks: "Tracks",
+    aboutDesc: "Revolutionizing music experience through cutting-edge technology, global connectivity, and an unwavering passion for sound.",
+    exploreFeatures: "Explore Features",
+    coreCommitment: "Our Core Commitments",
+  }
+};
+
+
 const SpotifyAboutUs = () => {
   const [activeTeamMember, setActiveTeamMember] = useState(null);
+  const AzerbaijanLang = languages.az;  
+  const EnglishLang = languages.en;
+  const [language, setLanguage] = useState(() => sessionStorage.getItem('language') || 'AZ');
+  const [currentLang, setCurrentLang] = useState(language === "AZ" ? AzerbaijanLang : EnglishLang);
+
   
   const teamMembers = [
     {
@@ -77,10 +105,10 @@ const SpotifyAboutUs = () => {
   ];
 
   const stats = [
-    { value: '40M+', label: 'Active Users' },
-    { value: '120+', label: 'Countries' },
-    { value: '5M+', label: 'Artists' },
-    { value: '250M+', label: 'Tracks' }
+    { value: '40M+', label: currentLang.activeUsers },
+    { value: '120+', label: currentLang.countries},
+    { value: '5M+', label: currentLang.artists },
+    { value: '250M+', label: currentLang.tracks }
   ];
 
   const closeTeamMemberModal = () => {
@@ -205,13 +233,12 @@ const SpotifyAboutUs = () => {
             </h1>
             
             <p className="text-2xl max-w-3xl mx-auto text-gray-200 leading-relaxed fadeIn delaySmall">
-              Revolutionizing music experience through cutting-edge technology,
-              global connectivity, and an unwavering passion for sound.
+              {currentLang.aboutDesc}
             </p>
             
             <div className="flex flex-wrap justify-center gap-6 pt-6 fadeIn delayMedium">
               <a href="#features" className="px-8 py-4 bg-green-500 hover:bg-green-600 text-green-500 font-bold rounded-full contactButton flex items-center gap-2">
-                Explore Features <ChevronDown className="w-5 h-5" />
+                {currentLang.exploreFeatures} <ChevronDown className="w-5 h-5" />
               </a>
  
             </div>
@@ -238,7 +265,7 @@ const SpotifyAboutUs = () => {
 
           <div className="container mx-auto px-6 about-features-box">
             <h2 className="text-5xl font-bold text-center mb-16 text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-500 tracking-tight fadeIn about-feature-title">
-              Our Core Commitments
+              {currentLang.coreCommitment}
             </h2>
             
             <div className="grid md:grid-cols-3 gap-10 ">

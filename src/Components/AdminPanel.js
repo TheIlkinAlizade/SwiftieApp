@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { supabase } from "../client";
 import { setLoading, setError, setMusicItems, addMusicItem, updateMusicItem, deleteMusicItem } from "../redux/musicSlice";
 import Navbar from "./Navbar";
+import { useNavigate } from 'react-router-dom';
 
 const AdminPanel = () => {
   const dispatch = useDispatch();
@@ -13,6 +14,8 @@ const AdminPanel = () => {
   const [formData, setFormData] = useState({ name: '', price: '', description: '', longdescription: '', category: '' });
   const [editingItem, setEditingItem] = useState(null);
   const [editFormData, setEditFormData] = useState({ name: "", price: "", description: "", longdescription: '',category: '' });
+  const [checkingAdmin, setCheckingAdmin] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     
@@ -95,6 +98,21 @@ const AdminPanel = () => {
       dispatch(deleteMusicItem(id));
     }
   };
+  useEffect(() => {
+    const checkAdminUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user || user.email !== "admin@gmail.com") {
+        alert("Access denied. Admins only.");
+        navigate("/");
+      } else {
+        setCheckingAdmin(false);
+      }
+    };
+    checkAdminUser();
+  }, [navigate]);
+
+  if (checkingAdmin) return <p>Checking admin access...</p>;
+
 
   return (
     <div className='containerItems'>

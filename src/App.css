@@ -99,7 +99,7 @@ body {
   }
 }
 
-/* Main Container Styles */
+
 .containerItems {
   background: linear-gradient(to bottom, var(--theme-gradient-start), var(--theme-gradient-end));
   color: var(--theme-text-primary);
@@ -107,12 +107,28 @@ body {
   justify-content: flex-start;
   align-items: center;
   flex-direction: column;
-  width: 100vw;
+  width: 100vw; /* Ensures full width */
+  max-width: 100%; /* Prevents any accidental overflow */
   height: 100vh;
   overflow-y: auto;
+  padding: 0 20px; /* Adds some padding from sides */
   scrollbar-width: thin;
   scrollbar-color: var(--theme-surface-light) var(--theme-background);
   transition: background 0.3s ease, color 0.3s ease;
+  margin-top: 50px;
+}
+.containerItems .titleFav {
+  width: 100%; 
+  margin: 50px 0;
+  padding-left : 214px  !important;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+
+.containerItems .titleFav:hover {
+  transform: scale(1.01);
 }
 
 .containerItems::-webkit-scrollbar {
@@ -129,18 +145,13 @@ body {
   transition: background-color 0.3s ease;
 }
 
-.containerItems .titleFav {
-  width: 80%;
-  margin: 20px 0;
-  font-weight: 700;
-  letter-spacing: -0.5px;
-  transition: transform 0.3s ease, color 0.3s ease;
-}
 
 .containerItems .titleFav:hover {
   transform: scale(1.01);
 }
 
+
+ 
 .theme-toggle {
   background: none;
   border: none;
@@ -392,9 +403,16 @@ body {
 }
 .containerItems .navbar .links .searchBtn {
   background-color: transparent;
+  transform: scale(1) translateX(-10px) !important;
+}
+.searchBtn {
+  background-color: transparent;
+  transform: scale(1) translateX(-25px) !important;
+}
+.searchBtn:hover {
+  background-color: transparent !important;
   transform: scale(1);
 }
-
 .containerItems .navbar .links .searchBtn:hover {
   background-color: transparent;
   transform: scale(1);
@@ -1274,452 +1292,294 @@ body.light-theme .copyright {
   right: 50px !important;
 }
 
-
-/* Spotify-inspired Checkout Page Styles with Theme Support */
-
-/* Base styles for both themes */
-.spotify-checkout-page {
-  min-height: 100vh;
-  font-family: 'Gotham', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+/* General Styles */
+.containerItems {
+  font-family: 'Arial', sans-serif;
 }
 
-.spotify-checkout-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 40px 20px;
+.containerItems .light-theme {
+  background-color: #fff !important;
+  color: #000 !important;
 }
 
-.spotify-checkout-header {
-  margin-bottom: 40px;
+.containerItems .dark-theme {
+  background-color: #181818 !important;
+  color: #f1f1f1 !important;
 }
 
-.spotify-checkout-header h2 {
-  font-size: 32px;
-  font-weight: 700;
-  margin-bottom: 16px;
-}
-
-.spotify-checkout-content {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 40px;
-}
-
-/* Cart Items Section */
-.spotify-cart-items {
-  border-radius: 8px;
-  padding: 24px;
-}
-
-.spotify-cart-items h3 {
-  font-size: 24px;
-  font-weight: 700;
-  margin-bottom: 24px;
-}
-
-.empty-cart-message {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 60px 0;
+/* Header */
+.containerItems .light-theme .header {
+  background-color: #1db954 !important;
+  color: white !important;
+  padding: 20px 0 !important;
   text-align: center;
-}
-
-.empty-cart-message i {
-  font-size: 64px;
-  margin-bottom: 16px;
-}
-
-.empty-cart-message p {
-  font-size: 18px;
-  margin-bottom: 24px;
-}
-
-.spotify-browse-button {
-  border: none;
-  border-radius: 500px;
-  padding: 12px 32px;
-  font-size: 16px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  transition: all 0.3s ease;
-  cursor: pointer;
-}
-
-.spotify-browse-button:hover {
-  transform: scale(1.05);
-}
-
-.cart-items-list {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.cart-item {
-  display: flex;
-  padding: 16px;
-  border-radius: 6px;
-  transition: background-color 0.3s ease;
-}
-
-.cart-item-image {
-  width: 80px;
-  height: 80px;
-  flex-shrink: 0;
-  margin-right: 16px;
-}
-
-.cart-item-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 4px;
-}
-
-.cart-item-details {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.cart-item-details h4 {
-  font-size: 16px;
-  font-weight: 700;
-  margin: 0 0 4px 0;
-}
-
-.item-artist {
-  font-size: 14px;
-  margin-bottom: 4px;
-}
-
-.item-category {
-  font-size: 12px;
-  padding: 2px 8px;
-  border-radius: 12px;
-  display: inline-block;
-}
-
-.cart-item-price {
-  font-size: 18px;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-}
-
-/* Checkout Summary Section */
-.checkout-summary {
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.summary-header {
-  padding: 24px;
-}
-
-.summary-header h3 {
   font-size: 24px;
-  font-weight: 700;
-  margin: 0;
 }
 
-.summary-details {
-  padding: 24px;
+.containerItems .dark-theme .header {
+  background-color: #121212 !important;
+  color: #ffffff !important;
+  padding: 20px 0 !important;
+  text-align: center;
+  font-size: 24px;
 }
 
-.summary-row {
+/* Cart Items */
+.containerItems .cart-items {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 20px;
+}
+
+.containerItems .cart-item {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 16px;
-  font-size: 16px;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
 }
 
-.summary-row.total {
+.containerItems .cart-item .item-name {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.containerItems .cart-item .item-price {
+  font-size: 16px;
+  color: #1db954;
+}
+
+/* Summary */
+.containerItems .summary-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  font-size: 18px;
+}
+
+.containerItems .summary-row .total {
+  font-weight: bold;
   font-size: 20px;
-  font-weight: 700;
-  margin-top: 16px;
 }
 
-.summary-divider {
-  height: 1px;
-  margin: 16px 0;
+.containerItems .summary-divider {
+  border-top: 2px solid #ccc;
+  margin: 10px 0;
 }
 
-.payment-button-container {
-  margin: 32px 0;
-}
-
-.spotify-payment-button {
+/* Button Styles */
+.containerItems .light-theme .checkout-button,
+.containerItems .dark-theme .checkout-button {
+  background-color: #1db954 !important;
+  color: white !important;
+  padding: 15px;
+  font-size: 18px;
   border: none;
-  border-radius: 500px;
-  padding: 16px;
-  font-size: 16px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  width: 100%;
-  transition: all 0.3s ease;
+  border-radius: 5px;
   cursor: pointer;
 }
 
-.spotify-payment-button:hover:not(:disabled) {
-  transform: scale(1.02);
+.containerItems .light-theme .checkout-button:hover,
+.containerItems .dark-theme .checkout-button:hover {
+  background-color: #1ed760 !important;
 }
 
-.spotify-payment-button:disabled {
-  cursor: not-allowed;
-  opacity: 0.7;
+.containerItems .light-theme .empty-cart-message i,
+.containerItems .dark-theme .empty-cart-message i {
+  color: #a5a5a5 !important;
 }
 
-.payment-info {
-  margin-top: 24px;
-  text-align: center;
+.containerItems .light-theme .empty-cart-message p,
+.containerItems .dark-theme .empty-cart-message p {
+  color: #666666 !important;
 }
 
-.payment-methods {
+/* Payment Methods */
+.containerItems .light-theme .payment-methods,
+.containerItems .dark-theme .payment-methods {
   display: flex;
-  justify-content: center;
-  gap: 16px;
-  margin-bottom: 16px;
+  justify-content: space-between;
+  gap: 10px;
 }
 
-.payment-methods i {
-  font-size: 32px;
+.containerItems .light-theme .payment-methods i,
+.containerItems .dark-theme .payment-methods i {
+  font-size: 24px;
+  color: #666666 !important;
 }
 
-.payment-info p {
-  font-size: 12px;
-  margin: 0;
+.containerItems .light-theme .payment-methods .paypal-icon,
+.containerItems .dark-theme .payment-methods .paypal-icon {
+  color: #0070ba;
 }
 
-/* Dark Theme (Spotify Default) */
-.dark-theme {
-  background-color: #121212;
-  color: #fff;
+.containerItems .light-theme .payment-methods .credit-card-icon,
+.containerItems .dark-theme .payment-methods .credit-card-icon {
+  color: #333;
 }
 
-.dark-theme .checkout-divider {
-  background-color: rgba(255, 255, 255, 0.1);
+/* Additional Styles for Mobile Responsiveness */
+@media (max-width: 768px) {
+  .containerItems .cart-items {
+    padding: 10px;
+  }
+
+  .containerItems .cart-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .containerItems .summary-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .containerItems .checkout-button {
+    font-size: 16px;
+    padding: 12px;
+  }
 }
 
-.dark-theme .spotify-cart-items,
-.dark-theme .checkout-summary {
-  background-color: #181818;
+/* Dark Theme Specific Adjustments */
+.containerItems .dark-theme .summary-row.total {
+  color: #fff !important;
 }
 
-.dark-theme .cart-item {
-  background-color: #282828;
+.containerItems .dark-theme .summary-divider {
+  background-color: rgba(255, 255, 255, 0.1) !important;
 }
 
-.dark-theme .cart-item:hover {
-  background-color: #333333;
+.containerItems .dark-theme .summary-header {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 
-.dark-theme .item-artist,
-.dark-theme .payment-info p {
-  color: #b3b3b3;
+.containerItems .dark-theme .spotify-browse-button,
+.containerItems .dark-theme .spotify-payment-button {
+  background-color: #1db954 !important;
+  color: white !important;
 }
 
-.dark-theme .item-category {
-  background-color: rgba(255, 255, 255, 0.1);
-  color: #b3b3b3;
+.containerItems .dark-theme .spotify-browse-button:hover,
+.containerItems .dark-theme .spotify-payment-button:hover:not(:disabled) {
+  background-color: #1ed760 !important;
 }
 
-.dark-theme .summary-row {
-  color: #b3b3b3;
+.containerItems .dark-theme .spotify-payment-button:disabled {
+  background-color: #a5a5a5 !important;
 }
 
-.dark-theme .summary-row.discount {
-  color: #1db954;
+.containerItems .dark-theme .payment-methods i {
+  color: #666666 !important;
 }
 
-.dark-theme .summary-row.total {
-  color: #fff;
+/* Light Theme Specific Adjustments */
+.containerItems .light-theme .summary-row.total {
+  color: #181818 !important;
 }
 
-.dark-theme .summary-divider {
-  background-color: rgba(255, 255, 255, 0.1);
+.containerItems .light-theme .summary-divider {
+  background-color: rgba(0, 0, 0, 0.1) !important;
 }
 
-.dark-theme .summary-header {
-  background-color: rgba(255, 255, 255, 0.03);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+.containerItems .light-theme .summary-header {
+  background-color: rgba(0, 0, 0, 0.02) !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
 }
 
-.dark-theme .empty-cart-message i {
-  color: #535353;
+.containerItems .light-theme .spotify-browse-button,
+.containerItems .light-theme .spotify-payment-button {
+  background-color: #1db954 !important;
+  color: white !important;
 }
 
-.dark-theme .empty-cart-message p {
-  color: #b3b3b3;
+.containerItems .light-theme .spotify-browse-button:hover,
+.containerItems .light-theme .spotify-payment-button:hover:not(:disabled) {
+  background-color: #1ed760 !important;
 }
 
-.dark-theme .spotify-browse-button,
-.dark-theme .spotify-payment-button {
-  background-color: #1db954;
+.containerItems .light-theme .spotify-payment-button:disabled {
+  background-color: #a5a5a5 !important;
+}
+
+.containerItems .light-theme .payment-methods i {
+  color: #666666 !important;
+}
+
+
+
+.savedContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: transparent;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.savedCartsHeader {
+  text-align: center;
+  font-size: 2rem;
+  color: #343a40;
+  margin-bottom: 30px;
+}
+
+.savedCartsList {
+  list-style-type: none;
+  padding: 0;
+}
+
+.savedCartItem {
+  background-color: transparent;
+  border: 1px solid #e1e1e1;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+.savedCartItem:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.savedCartTitle {
+  font-size: 1.5rem;
   color: white;
+  margin-bottom: 10px;
 }
 
-.dark-theme .spotify-browse-button:hover,
-.dark-theme .spotify-payment-button:hover:not(:disabled) {
-  background-color: #1ed760;
+.savedCartDate {
+  font-size: 1rem;
+  color: #6c757d;
+  margin: 5px 0;
 }
 
-.dark-theme .spotify-payment-button:disabled {
-  background-color: #535353;
+.savedCartDetails {
+  margin-top: 10px;
 }
 
-.dark-theme .payment-methods i {
-  color: #b3b3b3;
+.savedCartDetails p {
+  font-size: 1rem;
+  color: #6c757d;
+  margin: 5px 0;
 }
 
-/* Light Theme */
-.light-theme {
-  background-color: #f8f8f8;
-  color: #181818;
+.savedCartDetails p:nth-child(odd) {
+  font-weight: bold;
 }
 
-.light-theme .checkout-divider {
-  background-color: rgba(0, 0, 0, 0.1);
+.loadingText {
+  font-size: 1.2rem;
+  color: #007bff;
+  text-align: center;
+  margin-top: 20px;
 }
 
-.light-theme .spotify-cart-items,
-.light-theme .checkout-summary {
-  background-color: #ffffff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-}
-
-.light-theme .cart-item {
-  background-color: #f0f0f0;
-}
-
-.light-theme .cart-item:hover {
-  background-color: #e8e8e8;
-}
-
-.light-theme .item-artist,
-.light-theme .payment-info p {
-  color: #666666;
-}
-
-.light-theme .item-category {
-  background-color: rgba(0, 0, 0, 0.05);
-  color: #666666;
-}
-
-.light-theme .summary-row {
-  color: #666666;
-}
-
-.light-theme .summary-row.discount {
-  color: #1db954;
-}
-
-.light-theme .summary-row.total {
-  color: #181818;
-}
-
-.light-theme .summary-divider {
-  background-color: rgba(0, 0, 0, 0.1);
-}
-
-.light-theme .summary-header {
-  background-color: rgba(0, 0, 0, 0.02);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-.light-theme .empty-cart-message i {
-  color: #cccccc;
-}
-
-.light-theme .empty-cart-message p {
-  color: #666666;
-}
-
-.light-theme .spotify-browse-button,
-.light-theme .spotify-payment-button {
-  background-color: #1db954;
-  color: white;
-}
-
-.light-theme .spotify-browse-button:hover,
-.light-theme .spotify-payment-button:hover:not(:disabled) {
-  background-color: #1ed760;
-}
-
-.light-theme .spotify-payment-button:disabled {
-  background-color: #cccccc;
-}
-
-.light-theme .payment-methods i {
-  color: #666666;
-}
-
-/* Additional themes can be added here */
-/* Example: Premium Theme */
-.premium-theme {
-  background-color: #2d1a54;
-  color: #fff;
-  background-image: linear-gradient(45deg, #2d1a54, #1e0f33);
-}
-
-.premium-theme .checkout-divider {
-  background-color: rgba(255, 255, 255, 0.2);
-}
-
-.premium-theme .spotify-cart-items,
-.premium-theme .checkout-summary {
-  background-color: rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.premium-theme .cart-item {
-  background-color: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.premium-theme .cart-item:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
-.premium-theme .spotify-browse-button,
-.premium-theme .spotify-payment-button {
-  background: linear-gradient(45deg, #8f43ee, #c141ee);
-  box-shadow: 0 4px 12px rgba(143, 67, 238, 0.4);
-}
-
-.premium-theme .spotify-browse-button:hover,
-.premium-theme .spotify-payment-button:hover:not(:disabled) {
-  background: linear-gradient(45deg, #a35af1, #d44cf1);
-  box-shadow: 0 6px 16px rgba(143, 67, 238, 0.6);
-}
-
-/* Responsive styles */
-@media (max-width: 992px) {
-  .spotify-checkout-content {
-    grid-template-columns: 1fr;
-    gap: 24px;
-  }
-  
-  .checkout-summary {
-    order: -1;
-  }
-}
-
-@media (max-width: 576px) {
-  .cart-item {
-    flex-wrap: wrap;
-  }
-  
-  .cart-item-price {
-    width: 100%;
-    justify-content: flex-start;
-    margin-top: 16px;
-    padding-left: 96px; 
-  }
+.noSavedCarts {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #dc3545;
+  margin-top: 20px;
 }

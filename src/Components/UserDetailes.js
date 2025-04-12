@@ -3,12 +3,34 @@ import { supabase } from "../client";
 import { useNavigate } from "react-router-dom"; 
 import Navbar from "./Navbar";
 
+const languages = {
+  az: {
+    newPassword: "Yeni şifrə:",
+    displayName: "Ad:",
+    settings: "-in ayarları",
+    enterNewPassword: "Yeni şifrə gir",
+    saveChanges: "Yadda saxla"
+  },
+  en: {
+    newPassword: "New Password:",
+    displayName: "Display Name:",
+    settings: "'s Settings",
+    enterNewPassword: "Enter new password",
+    saveChanges: "Save Changes"
+  }
+};
+
+
 const UserDetailes = ({ token }) => {
   const navigate = useNavigate();
   const [displayName, setDisplayName] = useState("");
   const [password, setPassword] = useState("");
   const [profilePicture, setProfilePicture] = useState("");
   const [darkMode, setDarkMode] = useState(localStorage.getItem("theme") === "dark");
+  const AzerbaijanLang = languages.az;  
+  const EnglishLang = languages.en;
+  const [language, setLanguage] = useState(() => sessionStorage.getItem('language') || 'AZ');
+  const [currentLang, setCurrentLang] = useState(language === "AZ" ? AzerbaijanLang : EnglishLang);
 
   useEffect(() => {
     document.body.classList.toggle("light-theme", !darkMode);
@@ -90,9 +112,9 @@ const UserDetailes = ({ token }) => {
       </div>
 
       <div className={`user-detailes ${darkMode ? "dark" : "light"}`}>
-        <h2>{displayName}'s Settings</h2>
+        <h2>{displayName}{currentLang.settings}</h2>
         <div className="form-group">
-          <label>Display Name:</label>
+          <label>{currentLang.displayName}</label>
           <input
             type="text"
             value={displayName}
@@ -100,14 +122,14 @@ const UserDetailes = ({ token }) => {
           />
         </div>
         <div className="form-group">
-          <label>New Password:</label>
+          <label>{currentLang.newPassword}</label>
           <input
             type="password"
-            placeholder="Enter new password"
+            placeholder={currentLang.enterNewPassword}
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <button onClick={handleSaveChanges} className="save-btn">Save Changes</button>
+        <button onClick={handleSaveChanges} className="save-btn">{currentLang.saveChanges}</button>
       </div>
     </div>
   );

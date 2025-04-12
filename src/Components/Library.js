@@ -7,6 +7,67 @@ import { Link } from 'react-router-dom';
 import Wishlist from './Wishlist';
 import Navbar from './Navbar';
 
+const languages = {
+  az: {
+    premiumBanner: "3 aylıq pulsuz premium alın",
+    getPro: "Premium Al",
+    shopTitle: "Musiqi Mağazası",
+    premiumIndividual: "Premium Fərdi",
+    premiumDesc: "Telefon, dinamik və digər cihazlarda limitsiz dinləyin.",
+    tryFree: "1 AYLIQ PULSUZ YOXLA",
+    listView: "Siyahı Görünüşü",
+    gridView: "Grid Görünüşü",
+    all: "Hamısı",
+    featuredTitle: "Ayın Seçilmiş İfaçıları",
+    featuredDesc: "Ən yaxşı sənətçilərin yeni buraxılışlarını kəşf edin",
+    explore: "Kəşf et",
+    madeForYou: "Sizin üçün Hazırlanıb",
+    viewAll: "Hamısına Bax",
+    dailyMixDesc: "Dinlədikləriniz əsasında",
+    newsletterTitle: "Yeni buraxılışlardan xəbərdar olun",
+    newsletterPlaceholder: "E-mail ünvanınız",
+    subscribe: "ABUNƏ OL",
+    sideAdTitle: "Premium-u Sına",
+    sideAdDesc: "Reklamsız, oflayn dinləmə və limitsiz keçid.",
+    get3Months: "3 AYLIQ PULSUZ AL",
+    downloadAppTitle: "Tətbiqi endirin",
+    downloadAppDesc: "Yolda dinləyin. Bütün cihazlar üçün mövcuddur.",
+    appStore: "App Store",
+    googlePlay: "Google Play",
+    noitem: "Heçnə tapılmadı",
+    dailyMix: "Günlük Miks ",
+  },
+  en: {
+    premiumBanner: "Get 3 months of Premium for free",
+    getPro: "Get Premium",
+    shopTitle: "Music Shop",
+    premiumIndividual: "Premium Individual",
+    premiumDesc: "Listen without limits on your phone, speaker, and other devices.",
+    tryFree: "TRY FREE FOR 1 MONTH",
+    listView: "List View",
+    gridView: "Grid View",
+    all: "All",
+    featuredTitle: "Featured Artists of the Month",
+    featuredDesc: "Discover new releases from top artists",
+    explore: "Explore",
+    madeForYou: "Made For You",
+    viewAll: "View All",
+    dailyMixDesc: "Based on your listening",
+    newsletterTitle: "Stay updated with new releases",
+    newsletterPlaceholder: "Your email address",
+    subscribe: "SUBSCRIBE",
+    sideAdTitle: "Try Premium",
+    sideAdDesc: "No ads, offline listening, and unlimited skips.",
+    get3Months: "GET 3 MONTHS FREE",
+    downloadAppTitle: "Download the app",
+    downloadAppDesc: "Listen on the go. Available for all devices.",
+    appStore: "App Store",
+    googlePlay: "Google Play",
+    noitem: "No music items found.",
+    dailyMix: "Daily Mix ",
+  }
+};
+
 const Library = ({ token }) => {
   const [musicItems, setMusicItems] = useState([]); // Holds available music items
   const [userLibrary, setUserLibrary] = useState([]); // Holds user's library
@@ -15,14 +76,19 @@ const Library = ({ token }) => {
   const [showFeaturePromo, setShowFeaturePromo] = useState(true);
   const [theme, setTheme] = useState('dark');
   const [displayMode, setDisplayMode] = useState('grid'); 
-  
+  const AzerbaijanLang = languages.az;  
+  const EnglishLang = languages.en;
+  const [language, setLanguage] = useState(() => sessionStorage.getItem('language') || 'AZ');
+  const [currentLang, setCurrentLang] = useState(language === "AZ" ? AzerbaijanLang : EnglishLang);
+
+
   useEffect(() => {
    
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) {
-      setTheme(savedTheme);
-      document.body.classList.toggle("light-theme", savedTheme === "light");
-    }
+    const savedTheme = localStorage.getItem('spotifyTheme') || 'light';
+    setTheme(savedTheme);
+
+    document.body.className = savedTheme === 'dark' ? 'bg-dark' : 'bg-light';
+    
 
     const savedDisplayMode = localStorage.getItem('display-mode');
     if (savedDisplayMode) {
@@ -31,20 +97,15 @@ const Library = ({ token }) => {
     
     // Set up theme change listener for when theme changes in other components
     const handleStorageChange = (e) => {
+      const updatedTheme = localStorage.getItem('spotifyTheme') || 'light';
+      setTheme(updatedTheme);
+      document.body.className = updatedTheme === 'dark' ? 'bg-dark' : 'bg-light';
       if (e.key === 'display-mode') {
         setDisplayMode(e.newValue);
       }
-      if (e.key === 'theme') {
-        setTheme(e.newValue);
-        document.body.classList.toggle("light-theme", e.newValue === "light");
-      }
     };
-    
     window.addEventListener('storage', handleStorageChange);
-    
-    return () => {
-      window.removeEventListener('storage', handleStorageChange);
-    };
+    return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
 
   useEffect(() => {
@@ -156,6 +217,7 @@ const Library = ({ token }) => {
       console.error('Error adding music item to library:', error.message);
     } else {
       setUserLibrary((prev) => [...prev, musicId]);
+      alert('New Element in cart!');
     }
   }
   
@@ -192,6 +254,7 @@ const Library = ({ token }) => {
       console.error('Error adding music item to wishlist:', error.message);
     } else {
       setUserWishlist((prev) => [...prev, musicId]);
+      alert('New Element in wishlist!');
     }
   }
 
@@ -231,7 +294,11 @@ const Library = ({ token }) => {
       backgroundColor: colors.background,
       color: colors.textPrimary,
       fontFamily: 'Circular, Helvetica, Arial, sans-serif',
-      transition: 'background-color 0.3s ease, color 0.3s ease'
+      transition: 'background-color 0.3s ease, color 0.3s ease',
+      width:'100%',
+      minWidth: '102%',
+      margin:"0px 0 0 100px",
+      overflowX: 'hidden'
     },
     container: {
       backgroundColor: colors.background, 
@@ -407,20 +474,23 @@ const Library = ({ token }) => {
     },
     closeButton: {
       position: 'absolute',
-      top: '10px',
+      top: '0px',
       right: '10px',
       background: 'transparent',
       border: 'none',
       color: theme === 'dark' ? '#FFFFFF' : '#121212',
-      fontSize: '16px'
+      fontSize: '13px',
+      width: '10px',
+      maxWidth: '20px !important',
+      height: '20px !important',
+      padding: '0 !important'
     },
     topBanner: {
       backgroundColor: colors.primary,
       padding: '10px 0',
       textAlign: 'center',
       color: '#FFFFFF',
-      position: 'sticky',
-      top: 0,
+      position: 'relative',
       zIndex: 100
     },
     buttonPrimary: {
@@ -441,11 +511,12 @@ const Library = ({ token }) => {
       color: colors.textPrimary,
       fontWeight: '700',
       border: `1px solid ${colors.divider}`,
-      padding: '12px 32px',
+      padding: '12px 2px',
       textTransform: 'uppercase',
       letterSpacing: '1.5px',
       fontSize: '14px',
-      transition: 'background-color 0.3s ease'
+      transition: 'background-color 0.3s ease',
+      width: '200px'
     },
     recommendationsHeading: {
       display: 'flex',
@@ -535,17 +606,22 @@ const Library = ({ token }) => {
     Other: "https://media.istockphoto.com/id/1302638340/vector/line-music-festival-icons.jpg?s=612x612&w=0&k=20&c=PLtPyfjb6XaZ8N5yKA--kF__rAHzI8Wweqbo9HTbyc0=",
   };
   const [activeCategory, setActiveCategory] = useState('');
+  const [isVisible, setIsVisible] = useState(true);
+
+  const handleCloseClick = () => {
+    setIsVisible(false);
+  };
 
   return (
-    <div className='containerItems'>
+    <div className='containerItems' style={{overflowX: 'hidden'}}>
       <Navbar></Navbar>
       <div style={styles.body}>
         {/* Top Premium Banner */}
         <div style={styles.topBanner}>
           <Container>
             <div className="d-flex justify-content-between align-items-center">
-              <span>Get 3 months of Premium for free</span>
-              <Button style={styles.buttonSecondary} size="sm">Get Premium</Button>
+              <span>{currentLang.premiumBanner}</span>
+              <Button style={styles.buttonSecondary} size="sm">{currentLang.getPro}</Button>
             </div>
           </Container>
         </div>
@@ -554,15 +630,15 @@ const Library = ({ token }) => {
           {/* Header with controls */}
           <div style={styles.header}>
             <div style={styles.headerLeft}>
-              <h3 style={styles.heading}>Music Shop</h3>
+              <h3 style={styles.heading}>{currentLang.shopTitle}</h3>
             </div>
             <div style={styles.controls}>
               
               <button style={styles.displayToggle} onClick={toggleDisplayMode}>
                 {displayMode === 'grid' ? (
-                  <><i className='bx bx-list-ul'></i> List View</>
+                  <><i className='bx bx-list-ul'></i> {currentLang.listView}</>
                 ) : (
-                  <><i className='bx bx-grid-alt'></i> Grid View</>
+                  <><i className='bx bx-grid-alt'></i> {currentLang.gridView}</>
                 )}
               </button>
             </div>
@@ -572,12 +648,9 @@ const Library = ({ token }) => {
           <div style={styles.premiumBanner}>
             <Row className="align-items-center">
               <Col md={8}>
-                <h4 style={{fontWeight: 'bold', marginBottom: '12px', color: theme === 'dark' ? '#FFFFFF' : '#121212'}}>Premium Individual</h4>
-                <p style={{marginBottom: '16px', color: theme === 'dark' ? '#FFFFFF' : '#121212'}}>Listen without limits on your phone, speaker, and other devices.</p>
-                <Button style={{...styles.buttonPrimary, backgroundColor: '#000000'}}>TRY FREE FOR 1 MONTH</Button>
-              </Col>
-              <Col md={4} className="text-right">
-              
+                <h4 style={{fontWeight: 'bold', marginBottom: '12px', color: theme === 'dark' ? '#FFFFFF' : '#121212'}}>{currentLang.premiumIndividual}</h4>
+                <p style={{marginBottom: '16px', color: theme === 'dark' ? '#FFFFFF' : '#121212'}}>{currentLang.premiumDesc}</p>
+                <Button style={{...styles.buttonPrimary, backgroundColor: '#000000'}}>{currentLang.tryFree}</Button>
               </Col>
             </Row>
           </div>
@@ -613,16 +686,16 @@ const Library = ({ token }) => {
             <div style={styles.advertisementBanner}>
               <Row className="align-items-center">
                 <Col md={9}>
-                  <h5 style={{fontWeight: 'bold', color: colors.textPrimary}}>Featured Artists of the Month</h5>
-                  <p style={{color: colors.textSecondary}}>Discover new releases from top artists</p>
+                  <h5 style={{fontWeight: 'bold', color: colors.textPrimary}}>{currentLang.featuredTitle}</h5>
+                  <p style={{color: colors.textSecondary}}>{currentLang.featuredDesc}</p>
                 </Col>
                 <Col md={3} className="text-end">
                   <Button 
                     style={styles.buttonSecondary} 
                     size="sm"
-                  >Explore</Button>
+                  >{currentLang.explore}</Button>
                   <Button 
-                    style={{...styles.closeButton, position: 'relative'}} 
+                    style={{...styles.closeButton}} 
                     onClick={() => setShowFeaturePromo(false)}
                   >✕</Button>
                 </Col>
@@ -633,7 +706,7 @@ const Library = ({ token }) => {
           {/* Music items display with dynamic styling */}
           <div style={styles.cardsContainer}>
             {musicItems.length === 0 ? (
-              <p>No music items found.</p>
+              <p>{currentLang.noitem}</p>
             ) : (
               <>
                 {musicItems.filter(item => !activeCategory || item.category === activeCategory).map((item, index) => (
@@ -712,15 +785,15 @@ const Library = ({ token }) => {
 
           {/* "Made For You" Recommendation Banner */}
           <div style={styles.recommendationsHeading}>
-            <h4 style={styles.sectionHeader}>Made For You</h4>
-            <a href="#" style={styles.viewAll}>View All</a>
+            <h4 style={styles.sectionHeader}>{currentLang.madeForYou}</h4>
+            <a href="#" style={styles.viewAll}>{currentLang.viewAll}</a>
           </div>
           
           <div style={{
             ...styles.cardsContainer, 
             gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))'
           }}>
-            {[1, 2, 3, 4].map((item) => (
+            {[1, 2].map((item) => (
               <div 
                 key={`rec-${item}`} 
                 style={styles.card}
@@ -737,15 +810,15 @@ const Library = ({ token }) => {
               >
                 <div style={styles.imageContainer}>
                   <img 
-                    src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwcHBwgHBw0HBw..." 
+                    src="https://pickasso.spotifycdn.com/image/ab67c0de0000deef/dt/v1/img/daily/1/ab6761610000e5ebb99cacf8acd5378206767261/en" 
                     style={styles.image}
                     alt={`Recommendation ${item}`}
                   />
                   <button style={styles.playButton} data-play-button>▶</button>
                 </div>
                 <div style={displayMode === 'list' ? styles.contentContainer : undefined}>
-                  <p style={styles.itemTitle}>Daily Mix {item}</p>
-                  <p style={styles.itemDescription}>Based on your listening</p>
+                  <p style={styles.itemTitle}>{currentLang.dailyMix}{item}</p>
+                  <p style={styles.itemDescription}>{currentLang.dailyMixDesc}</p>
                 </div>
               </div>
             ))}
@@ -753,7 +826,7 @@ const Library = ({ token }) => {
 
           {/* Newsletter signup form */}
           <div style={styles.newsletterForm}>
-            <h4 style={{color: colors.textPrimary, fontWeight: 'bold', marginBottom: '16px'}}>Stay updated with new releases</h4>
+            <h4 style={{color: colors.textPrimary, fontWeight: 'bold', marginBottom: '16px'}}>{currentLang.newsletterTitle}</h4>
             <Row className="align-items-center">
               <Col md={8}>
                 <input 
@@ -763,29 +836,33 @@ const Library = ({ token }) => {
                 />
               </Col>
               <Col md={4}>
-                <Button style={styles.buttonPrimary} className="w-100">SUBSCRIBE</Button>
+                <Button style={styles.buttonPrimary} className="w-100">{currentLang.subscribe}</Button>
               </Col>
             </Row>
           </div>
 
           {/* Floating Side Advertisement */}
           <div style={styles.sidePromo}>
+          {isVisible && (
+            <>
             <Button 
               style={styles.closeButton}
-              onClick={() => document.querySelector('[style*="sidePromo"]').style.display = 'none'}
-            >✕</Button>
-            <h6 style={{color: colors.textPrimary, fontWeight: 'bold', marginBottom: '12px'}}>Try Premium</h6>
-            <p style={{color: colors.textSecondary, fontSize: '14px', marginBottom: '16px'}}>No ads, offline listening, and unlimited skips.</p>
-            <Button style={{...styles.buttonPrimary, width: '100%', padding: '8px'}}>GET 3 MONTHS FREE</Button>
+              onClick={handleCloseClick}
+              >✕</Button>
+            <h6 style={{color: colors.textPrimary, fontWeight: 'bold', marginBottom: '12px'}}>{currentLang.sideAdTitle}</h6>
+            <p style={{color: colors.textSecondary, fontSize: '14px', marginBottom: '16px'}}>{currentLang.sideAdDesc}</p>
+            <Button style={{...styles.buttonPrimary, width: '100%', padding: '8px'}}>{currentLang.get3Months}</Button>
+            </>
+          )}
           </div>
 
           {/* Footer Promotion Banner */}
           <div style={styles.footerBanner}>
-            <h5 style={{color: '#FFFFFF', fontWeight: 'bold', marginBottom: '8px'}}>Download the app</h5>
-            <p style={{color: '#FFFFFF', marginBottom: '16px'}}>Listen on the go. Available for all devices.</p>
+            <h5 style={{color: '#FFFFFF', fontWeight: 'bold', marginBottom: '8px'}}>{currentLang.downloadAppTitle}</h5>
+            <p style={{color: '#FFFFFF', marginBottom: '16px'}}>{currentLang.downloadAppDesc}</p>
             <div className="d-flex justify-content-center">
-              <Button style={{...styles.buttonSecondary, marginRight: '16px', backgroundColor: '#FFFFFF', color: '#000000'}}>App Store</Button>
-              <Button style={{...styles.buttonSecondary, backgroundColor: '#FFFFFF', color: '#000000'}}>Google Play</Button>
+              <Button style={{...styles.buttonSecondary, marginRight: '16px', backgroundColor: '#FFFFFF', color: '#000000'}}>{currentLang.appStore}</Button>
+              <Button style={{...styles.buttonSecondary, backgroundColor: '#FFFFFF', color: '#000000'}}>{currentLang.googlePlay}</Button>
             </div>
           </div>
         </Container>

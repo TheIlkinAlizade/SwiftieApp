@@ -3,9 +3,24 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Accordion, Container, FormControl, InputGroup, Card, Button, Form, Row, Col, Badge, Alert } from 'react-bootstrap';
 import Navbar from './Navbar';
 
+
+const languages = {
+  az: {
+    browseByCategory: "Kategoriya üzrə bax",
+  },
+  en: {
+    browseByCategory: "Browse by category",
+  }
+};
+
 const SpotifyFAQ = () => {
 
   const [theme, setTheme] = useState('light');
+  const AzerbaijanLang = languages.az;  
+  const EnglishLang = languages.en;
+  const [language, setLanguage] = useState(() => sessionStorage.getItem('language') || 'AZ');
+  const [currentLang, setCurrentLang] = useState(language === "AZ" ? AzerbaijanLang : EnglishLang);
+
   
   useEffect(() => {
   
@@ -293,7 +308,7 @@ const SpotifyFAQ = () => {
 
         {/* Category Navigation */}
         <div className="text-center mb-4">
-          <h2 className="mb-4" style={{ color: textColor }}>Browse by category</h2>
+          <h2 className="mb-4" style={{ color: textColor }}>{currentLang.browseByCategory}</h2>
           <Row className="g-3 justify-content-center">
             {faqCategories.map((category, idx) => (
               <Col key={idx} xs={12} md={4}>

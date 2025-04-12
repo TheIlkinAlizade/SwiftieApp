@@ -1,0 +1,300 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500&family=MuseoModerno:wght@100&display=swap');
+
+.defaultcontainer{
+    background-color: black;
+}
+.banner{
+    width: 100%;
+    height: 100vh;
+    background-image: url('./images/guitarist-guitar-player-wallpaper-music-wallpapers.jpg');
+    background-position: center;
+    background-size: cover;
+}
+.defaultcontainer .navbar{
+    width: 85%;
+    margin: auto;
+    padding: 35px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.logo{
+    width: 120px;
+    cursor: pointer;
+}
+.defaultcontainer .navbar ul li{
+    list-style: none;
+    display: inline-block;
+    margin: 0 20px;
+    position: relative;
+}
+.defaultcontainer .navbar ul li a{
+    text-decoration: none;
+    color: #fff;
+    text-transform: uppercase;
+}
+.defaultcontainer .navbar ul li::after{
+    content: '';
+    height: 2px;
+    width: 0;
+    background: #009688;
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    transition: 0.5s;
+}
+.defaultcontainer .navbar ul li:hover::after{
+    width: 100%;
+}
+
+.defaultcontainer .navbar button{
+    width: 150px;
+    padding: 15px 0;
+    text-align: center;
+    margin: 20px 10px;
+    border: 1px solid white;
+    background: transparent;
+    color: #fff;
+    font-size: 18px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+.defaultcontainer .navbar button:hover{
+    scale: 1.1;
+}
+
+.defaultcontainer .content{
+    width: 100%;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    text-align: center;
+    color: #fff;
+}
+.defaultcontainer .content h1{
+    font-size: 110px;
+    margin-top: 40px;
+    font-family: 'Dancing Script', cursive;
+}
+.defaultcontainer .content p{
+    margin: 20px auto;
+    font-weight: 100;
+    line-height: 25px;
+}
+
+/*Musics*/
+
+.defaultcontainer .Musics{
+    width: 100%;
+    height: 100vh;
+    padding: 70px 0;
+    background-color: white;
+}
+
+.defaultcontainer .Musics h1{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 70px;
+    font-size: 45px;
+}
+
+.defaultcontainer .Musics .feautured_music_box{
+     width: 95%;
+     height: 60vh;
+     margin: 0 auto;
+     display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    overflow: hidden;
+    overflow-x: scroll;
+ }
+
+.defaultcontainer .Musics .feautured_music_box .featured_music_card{
+    width: 250px;
+    height: 425px;
+    text-align: center;
+    padding: 5px;
+    border: 1px solid #919191;
+    margin: auto 20px;
+    background-color: white;
+
+}
+.defaultcontainer .Musics .feautured_music_box .featured_music_card:hover{
+    box-shadow: 0 0 5px #089da1;
+    scale: 0.95;
+}
+
+.defaultcontainer .Musics .feautured_music_box .featured_music_card .featured_music_img img{
+    margin-top: 8px;
+    width: 205px;
+    height: 250px;
+}
+
+.defaultcontainer .Musics .feautured_music_box .featured_music_card .featured_music_tag h2{
+    margin: 12px;
+}
+
+.defaultcontainer .Musics .feautured_music_box .featured_music_card .featured_music_tag .singer{
+    color: #919191;
+}
+
+.defaultcontainer .Musics .feautured_music_box .featured_music_card .featured_music_tag .categories{
+    color: #089da1;
+    margin-top: 8px;
+}
+
+.defaultcontainer .Musics .feautured_music_box .featured_music_card .featured_music_tag .music_price{
+    margin-top: 8px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.defaultcontainer .Musics .feautured_music_box .featured_music_card .featured_music_tag .f_btn{
+    padding: 8px 20px;
+    border: 2px solid #089da1;
+    text-decoration: none;
+    color: #000;
+}
+
+.defaultcontainer ::-webkit-scrollbar{
+    width: 10px;
+    height: 5px;
+}
+
+.defaultcontainer ::-webkit-scrollbar-track{
+    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.2);
+}
+
+.defaultcontainer ::-webkit-scrollbar-thumb{
+    background: #089da1;
+    border-radius: 10px;
+}
+
+/*About*/
+
+.defaultcontainer .about{
+    width: auto;
+    height: 700px;
+    background-color: white;
+}
+
+.defaultcontainer .about .about-text {
+    text-align: center;
+    color: black;
+}
+
+.defaultcontainer .about-Join-btn{
+    margin-top: 120px;
+    margin-bottom: 120px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.defaultcontainer .about a{
+    position: relative;
+    padding: 30px 70px;
+    margin: 0 15px;
+    color: #21ebff;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 50px;
+    overflow: hidden;
+    transition: 0.5s;
+}
+
+.defaultcontainer .about a:hover{
+    background-color: #21ebff;
+    color: #ffffff;
+    box-shadow: 0 0 50px;
+    transition-delay: 0.2s;
+    cursor: pointer;
+}
+
+.defaultcontainer .about a:before{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 10px;
+    height: 10px;
+    border-top: 2px solid #21ebff;
+    border-left: 2px solid #21ebff;
+    transition: 0.5s;
+}
+
+.defaultcontainer .about a:hover:before{
+    width: 100%;
+    height: 100%;
+}
+
+.defaultcontainer .about a:after{
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 10px;
+    height: 10px;
+    border-bottom: 2px solid #21ebff;
+    border-right: 2px solid #21ebff;
+    transition: 0.5s;
+}
+
+.defaultcontainer .about a:hover:after{
+    width: 100%;
+    height: 100%;
+}
+.defaultcontainer a:nth-child(1){
+    filter: hue-rotate(270deg);
+}
+
+/*More*/
+
+.defaultcontainer .more{
+    width: auto;
+    height: 600px;
+}
+.defaultcontainer .more h1{
+    text-align: center;
+    font-family: 'MuseoModerno', sans-serif;
+    color: white;
+    margin: 20px;
+}
+.defaultcontainer .more .more-form{
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    background-color: black;
+}
+.defaultcontainer .more .more-form input{
+    margin: 20px;
+    width: 400px;
+    padding: 10px;
+    font-size: 25px;
+}
+.defaultcontainer .more .more-form #more-email{
+    height: 35px;
+}
+.defaultcontainer .more .more-form #more-message{
+    height: 250px;
+    padding: 10px;
+    font-size: 20px;
+}
+.defaultcontainer .more .more-form button {
+    width: 150px;
+    padding: 15px 0;
+    text-align: center;
+    margin: 20px 10px;
+    border: 1px solid white;
+    background: white;
+    color: black;
+    font-size: 25px;
+    cursor: pointer;
+    position: relative;
+    font-family: Arial, sans-serif;
+}
+.sign-href{
+    text-decoration: none;
+    color: white;
+}

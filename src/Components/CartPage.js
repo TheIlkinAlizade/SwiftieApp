@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setLoading, setError, setMusicItems, addMusicItem, updateMusicItem, deleteMusicItem } from "../redux/musicSlice";
 import Library from './Library';
 import Cart from './Cart';
-import CheckoutPage from './CheckoutPage';
+import CheckoutPage from './Checkout';
 
 const CartPage = ({ token }) => {
     let navigate = useNavigate();

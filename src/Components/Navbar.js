@@ -1,19 +1,169 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { supabase } from "../client";
 import { Link, useNavigate } from "react-router-dom";
 
 const CLIENT_ID = "5ed04eb65f1e4eb9bf0de8ec5418111f";
 const CLIENT_SECRET = "d9785a1ad1e246edb7480e256469671c";
 
-const Navbar = ({ token }) => {
+const languages = {
+  az: {
+    searchPlaceHolder: "Müğənni, mahnı, albom axtar",
+    myAcc: "Hesabım",
+    logout: "Çıxış et"
+  },
+  en: {
+    searchPlaceHolder: "Search For Artist, Track, or Album",
+    myAcc: "My Account",
+    logout: "Log out"
+  }
+};
+
+const UserDropdown = ({ token, onLogout }) => {
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+  const AzerbaijanLang = languages.az;  
+  const EnglishLang = languages.en;
+  const [language, setLanguage] = useState(() => sessionStorage.getItem('language') || 'AZ');
+  const [currentLang, setCurrentLang] = useState(language === "AZ" ? AzerbaijanLang : EnglishLang);
+  const [username, setusername] = useState("");
+
+  useEffect(() => {
+    if(token?.user?.user_metadata?.full_name == " "){
+      setusername(token?.user?.user_metadata?.full_name);
+      console.log(token?.user?.user_metadata?.full_name);
+      var user = token?.user?.user_metadata?.full_name;
+      console.log(user);
+      setusername(user);
+      console.log(username);
+      console.log(token);
+    }
+  });
+
+  useEffect(() => {
+
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  return (
+    <div ref={dropdownRef} style={{ position: "relative", display: "inline-block" }}>
+      <button
+        onClick={() => setDropdownOpen(!dropdownOpen)}
+        style={{
+          backgroundColor: "#333",
+          border: "none",
+          borderRadius: "20px",
+          padding: "6px 12px",
+          color: "#fff",
+          cursor: "pointer",
+          display: "flex",
+          alignItems: "center",
+          gap: "8px",
+        }}
+      >
+        <span>{username === "" ? "User" : username}</span>
+        <i className={`bx ${dropdownOpen ? "bx-chevron-up" : "bx-chevron-down"}`} />
+      </button>
+
+      {dropdownOpen && (
+        <div
+          style={{
+            position: "absolute",
+            right: 0,
+            marginTop: "10px",
+            backgroundColor: "#282828",
+            borderRadius: "6px",
+            boxShadow: "0 8px 16px rgba(0, 0, 0, 0.3)",
+            width: "180px",
+            zIndex: 1000,
+          }}
+        >
+          <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+            <li>
+              <Link
+                to="/userdetails"
+                style={{
+                  display: "block",
+                  padding: "12px 16px",
+                  textDecoration: "none",
+                  color: "#fff",
+                }}
+              >
+                {currentLang.myAcc}
+              </Link>
+            </li>
+            <li style={{ borderTop: "1px solid #444" }}>
+              <button
+                onClick={onLogout}
+                style={{
+                  width: "50%",
+                  padding: "12px 16px",
+                  background: "none",
+                  border: "none",
+                  color: "#fff",
+                  textAlign: "left",
+                  cursor: "pointer",
+                }}
+              >
+                {currentLang.logout}
+              </button>
+            </li>
+          </ul>
+        </div>
+      )}
+    </div>
+  );
+};
+
+
+const Navbar = ({ token, sidebarCollapsed }) => {
+  const [darkTheme, setDarkTheme] = useState(localStorage.getItem("theme") === "dark" || !localStorage.getItem("theme"));
   const [searchInput, setSearchInput] = useState("");
   const [accessToken, setAccessToken] = useState("");
   const [profilePic, setProfilePic] = useState(null);
   const [theme, setTheme] = useState('dark'); // Default theme
   const [darkMode, setDarkMode] = useState(localStorage.getItem("theme") === "dark" || false);
+  const AzerbaijanLang = languages.az;  
+  const EnglishLang = languages.en;
+  const [language, setLanguage] = useState(() => sessionStorage.getItem('language') || 'AZ');
+  const [currentLang, setCurrentLang] = useState(language === "AZ" ? AzerbaijanLang : EnglishLang);
+
+
   const navigate = useNavigate();
 
-  // Fetch access token for Spotify API
+  useEffect(() => {
+    // Apply theme to body
+    document.body.style.backgroundColor = darkTheme ? "#121212" : "#ffffff";
+    document.body.style.color = darkTheme ? "#fff" : "#191414";
+    localStorage.setItem("theme", darkTheme ? "dark" : "light");
+  }, [darkTheme]);
+
+
+
+  const toggleTheme = () => {
+    window.location.reload(); 
+    setDarkTheme(!darkTheme);
+    window.location.reload(); 
+  };
+
+  const toggleLanguage = () => {
+    const newLang = language === "EN" ? "AZ" : "EN";
+    setLanguage(newLang);
+    localStorage.setItem("language", newLang);
+    window.location.reload(); 
+
+  };
+
+  const handleLogout = () => {
+    sessionStorage.removeItem("token");
+    navigate("/login");
+  };
   useEffect(() => {
     async function fetchAccessToken() {
       try {
@@ -52,13 +202,6 @@ const Navbar = ({ token }) => {
     fetchProfile();
   }, [token]);
 
-  // Toggle between light and dark mode
-  const toggleTheme = () => {
-    const newDarkMode = !darkMode;
-    setDarkMode(newDarkMode);
-    localStorage.setItem("theme", newDarkMode ? "dark" : "light");
-    document.body.classList.toggle("light-theme", !newDarkMode);
-  };
 
   // Initialize theme based on localStorage
   useEffect(() => {
@@ -74,96 +217,108 @@ const Navbar = ({ token }) => {
     navigate(`/search?q=${encodeURIComponent(searchInput)}`);
   };
 
-  // Handle logout
-  const handleLogout = () => {
-    sessionStorage.removeItem('token');
-    navigate('/login');
+  const handleLangChange = (e) => {
+    // sessionStorage.removeItem('token');
+    const newLang = e.target.value;
+    setLanguage(newLang);
+    window.location.reload(); 
   };
+  const checkLang = (lang) => {
+    console.log(lang);
+  };
+  useEffect(() => {
+    checkLang(language);
+    sessionStorage.setItem('language', language);
+  }, [language]);
 
   return (
-    <div className="navbar">
-      <div className="links">
-        <button>
-          <Link to="/home">
-            <i className="bx bx-home-alt"></i>
-          </Link>
+    <nav style={{
+      position: "fixed",
+      top: 0,
+      right: 0,
+      height: "72px",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "flex-end",
+      padding: "0 24px",
+      backgroundColor: darkTheme ? "rgba(0,0,0,0.7)" : "rgba(255,255,255,0.7)",
+      backdropFilter: "blur(10px)",
+      zIndex: 900,
+      boxShadow: "0 1px 0 rgba(0,0,0,0.1)",
+      width: `calc(100% - ${sidebarCollapsed ? '10px' : '0px'})`,
+      transition: "width 0.3s ease, background-color 0.3s ease"
+    }}>
+      <div style={{
+        display: "flex",
+        alignItems: "center",
+        gap: "16px"
+      }}>
+          <form onSubmit={search}>
+            <div className="search-bar">
+              <input
+                placeholder={currentLang.searchPlaceHolder}
+                value={searchInput}
+                onChange={(e) => setSearchInput(e.target.value)}
+              />
+              <button type="submit" className="searchBtn">
+                <i className="bx bx-search-alt-2"></i>
+              </button>
+            </div>
+          </form>
+        {/* Theme Toggle Button */}
+        <button
+          onClick={toggleTheme}
+          className="nav-btn"
+          style={{
+            backgroundColor: darkTheme ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)",
+            border: "none",
+            width: "32px",
+            height: "32px",
+            borderRadius: "50%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            cursor: "pointer",
+            transition: "all 0.2s ease",
+            color: darkTheme ? "#fff" : "#000",
+          }}
+        >
+          <i className={`bx ${darkTheme ? "bx-sun" : "bx-moon"}`} style={{ fontSize: "18px" }}></i>
         </button>
-        <button>
-          <Link to="/favorites">
-            <i className="bx bx-library"></i>
-          </Link>
+        
+      
+        <button
+          onClick={toggleLanguage}
+          className="nav-btn"
+          style={{
+            backgroundColor: darkTheme ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)",
+            border: "none",
+            height: "32px",
+            borderRadius: "16px",
+            padding: "0 12px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            cursor: "pointer",
+            transition: "all 0.2s ease",
+            color: darkTheme ? "#fff" : "#000",
+            fontWeight: "bold",
+            fontSize: "14px",
+          }}
+        >
+          {language === "EN" ? "EN" : "AZ"}
         </button>
-        <form onSubmit={search}>
-          <div className="search-bar">
-            <input
-              placeholder="Search For Artist, Track, or Album"
-              value={searchInput}
-              onChange={(e) => setSearchInput(e.target.value)}
-            />
-            <button type="submit" className="searchBtn">
-              <i className="bx bx-search-alt-2"></i>
-            </button>
-          </div>
-        </form>
+          {/* <select name="language" value={language} onChange={(e) => handleLangChange(e)}>
+            <option value="AZ">AZ</option>
+            <option value="EN">EN</option>
+          </select> */}
+        
+        <UserDropdown 
+          token={token}
+          onLogout={handleLogout}
+        />
       </div>
-
-      <div className="links">
-        <button>
-          <Link to="/about">
-            <i className="bx bx-info-circle"></i>
-          </Link>
-        </button>
-        <button>
-          <Link to="/faq">
-            <i className="bx bx-question-mark"></i>
-          </Link>
-        </button>
-        <button>
-          <Link to="/cart">
-            <i class='bx bx-cart-alt' ></i>
-          </Link>
-        </button>
-        <button>
-          <Link to="/wishlist">
-            <i class='bx bx-list-ul' ></i>
-          </Link>
-        </button>
-      </div>
-
-      <div className="links links3">
-
-
-        <button onClick={toggleTheme} className="theme-toggle" title={darkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}>
-          {darkMode ? (
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="12" cy="12" r="5"></circle>
-              <line x1="12" y1="1" x2="12" y2="3"></line>
-              <line x1="12" y1="21" x2="12" y2="23"></line>
-              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-              <line x1="1" y1="12" x2="3" y2="12"></line>
-              <line x1="21" y1="12" x2="23" y2="12"></line>
-              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-            </svg>
-          ) : (
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-            </svg>
-          )}
-        </button>
-      </div>
-
-      <div className="links links2">
-        <button className="profile-btn" onClick={() => navigate('/userdetails')}>
-          {profilePic ? (
-            <img src={profilePic} alt="Profile" className="profile-pic" />
-          ) : (
-            <i className="bx bx-user-circle"></i>
-          )}
-        </button>
-      </div>
-    </div>
+    </nav>
   );
 };
 

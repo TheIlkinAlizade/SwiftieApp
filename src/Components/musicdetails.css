@@ -1,0 +1,116 @@
+/* Style for the overall music details card */
+.music-details-card {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    max-width: 900px;
+    margin: 20px auto;
+  }
+  
+  /* About Section */
+  h4 {
+    font-size: 1.75rem;
+    color: #333;
+    font-weight: 700;
+  }
+  
+  .lead {
+    font-size: 1.25rem;
+    font-weight: 400;
+    color: #444;
+    line-height: 1.6;
+  }
+  
+  .text-success {
+    color: #28a745;
+  }
+  
+  /* Detailed Information Card */
+  .detailed-info-card {
+    background-color: #f7f7f7;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    padding: 20px;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .detailed-info-card:hover {
+    background-color: #e0e0e0;
+    border-color: #d0d0d0;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  .detailed-info-card h5 {
+    font-size: 1.25rem;
+    color: #333;
+    font-weight: 600;
+  }
+  
+  .detailed-info-card p {
+    font-size: 1rem;
+    color: #555;
+    line-height: 1.6;
+  }
+  
+  .text-muted {
+    color: #777;
+  }
+  
+  .text-dark {
+    color: #222;
+  }
+  
+  /* List Group Items */
+  .list-group-item {
+    padding: 12px 20px;
+    font-size: 1.1rem;
+  }
+  
+  .list-group-item strong {
+    color: #333;
+  }
+  
+  .list-group-item span {
+    color: #555;
+  }
+  
+  /* Buttons */
+  button {
+    font-size: 1.1rem;
+  }
+  
+  button:focus {
+    outline: none;
+    box-shadow: none;
+  }
+  
+  button:active {
+    transform: scale(0.98);
+  }
+  
+  button.success {
+    background-color: #28a745;
+    color: white;
+  }
+  
+  button.outline-light {
+    background-color: transparent;
+    border: 1px solid #f8f9fa;
+    color: #6c757d;
+  }
+  
+  button.outline-danger {
+    background-color: transparent;
+    border: 1px solid #dc3545;
+    color: #dc3545;
+  }
+  
+  /* Font Awesome icons */
+  .fa-info-circle,
+  .fa-heart,
+  .fa-arrow-left,
+  .fa-tag,
+  .fa-calendar-alt {
+    font-size: 1.3rem;
+  }
+  

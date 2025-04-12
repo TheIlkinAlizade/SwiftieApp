@@ -1,0 +1,400 @@
+/* Spotify-inspired Checkout Styles */
+
+:root {
+    --spotify-green: #1DB954;
+    --spotify-black: #191414;
+    --spotify-dark-gray: #282828;
+    --spotify-medium-gray: #404040;
+    --spotify-light-gray: #B3B3B3;
+    --spotify-white: #FFFFFF;
+    --spotify-blue: #4687D6;
+    --font-family: 'Circular', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  }
+  
+  body {
+    font-family: var(--font-family);
+    background-color: var(--spotify-black);
+    color: var(--spotify-white);
+  }
+  
+  /* Base Container */
+  .checkout-container {
+    background-color: var(--spotify-black);
+    color: var(--spotify-white);
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    border-radius: 12px;
+  }
+  
+  /* Card Styling */
+  .card {
+    background-color: var(--spotify-dark-gray);
+    border-radius: 8px;
+    border: none;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+    color: var(--spotify-white);
+    z-index: 1;
+  }
+  
+  .card-header {
+    background-color: var(--spotify-dark-gray);
+    border-bottom: 1px solid var(--spotify-medium-gray);
+    padding: 1rem 1.5rem;
+  }
+  
+  .card-header h4, .card-header h3, .card-header h5 {
+    margin-bottom: 0;
+    font-weight: 700;
+    color: var(--spotify-white);
+  }
+  
+  .card-body {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    top: 0;
+  }
+  .card-body form{
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .card-footer {
+    background-color: var(--spotify-dark-gray);
+    border-top: 1px solid var(--spotify-medium-gray);
+    padding: 1rem 1.5rem;
+  }
+  
+  /* Form Controls */
+  .form-control, .form-select {
+    background-color: var(--spotify-medium-gray);
+    border: 1px solid var(--spotify-medium-gray);
+    border-radius: 4px;
+    padding: 0.75rem 1rem;
+    color: var(--spotify-white);
+    transition: all 0.2s ease;
+    border: 1px solid white !important;
+  }
+  
+  .form-control:focus, .form-select:focus {
+    background-color: var(--spotify-medium-gray);
+    border-color: var(--spotify-green);
+    box-shadow: 0 0 0 2px rgba(29, 185, 84, 0.3);
+    color: var(--spotify-white);
+  }
+  
+  .form-control::placeholder {
+    color: var(--spotify-light-gray);
+  }
+  
+  .form-label {
+    color: var(--spotify-light-gray);
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+  
+  .form-check-input {
+    background-color: var(--spotify-medium-gray);
+    border-color: var(--spotify-light-gray);
+    width: 20px !important;
+    height: 20px !important;
+    border: 1px solid var(--spotify-green) !important;
+    padding: 0 !important;
+  }
+  
+  .form-check-input:checked {
+    background-color: var(--spotify-green);
+    border-color: var(--spotify-green);
+  }
+  
+  .form-check-label {
+    color: var(--spotify-white);
+  }
+  
+  /* Buttons */
+ .checkout .btn {
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 0.875rem 2rem;
+    border-radius: 50px;
+    transition: all 0.2s ease;
+    border: none;
+    width: 200px;
+    height: 70px !important;
+
+  }
+  .btnPayMethod{
+    left: 90% !important;
+    bottom: -20px !important;
+  }
+  .btn-primary {
+    background-color: var(--spotify-green);
+    color: var(--spotify-black);
+  }
+  
+  .btn-primary:hover, .btn-primary:focus {
+    background-color: #1ed760;
+    transform: scale(1.04);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .btn-outline-secondary {
+    color: var(--spotify-white);
+    border: 1px solid var(--spotify-light-gray);
+    background-color: transparent;
+  }
+  
+  .btn-outline-secondary:hover, .btn-outline-secondary:focus {
+    background-color: var(--spotify-medium-gray);
+    color: var(--spotify-white);
+    border-color: var(--spotify-white);
+  }
+  
+  .btn-secondary {
+    background-color: var(--spotify-medium-gray);
+    color: var(--spotify-white);
+  }
+  
+  .btn-secondary:hover {
+    background-color: var(--spotify-light-gray);
+    color: var(--spotify-black);
+  }
+  
+  /* Text styling */
+  h1, h2, h3, h4, h5, h6 {
+    color: var(--spotify-white);
+    font-weight: 700;
+  }
+  
+  .text-muted {
+    color: var(--spotify-light-gray) !important;
+  }
+  
+  /* Order Items */
+  .order-item {
+    border-bottom: 1px solid var(--spotify-medium-gray);
+    padding: 1rem 0;
+  }
+  
+  .order-item:last-child {
+    border-bottom: none;
+  }
+  
+  /* Alerts */
+  .alert {
+    border-radius: 4px;
+    border: none;
+  }
+  
+  .alert-success {
+    background-color: rgba(29, 185, 84, 0.1);
+    color: var(--spotify-green);
+    border-left: 4px solid var(--spotify-green);
+  }
+  
+  .alert-danger {
+    background-color: rgba(224, 58, 58, 0.1);
+    color: #e03a3a;
+    border-left: 4px solid #e03a3a;
+  }
+  
+  .alert-warning {
+    background-color: rgba(255, 170, 0, 0.1);
+    color: #ffaa00;
+    border-left: 4px solid #ffaa00;
+  }
+  
+  /* Modal Styling */
+  .modal-content {
+    background-color: var(--spotify-dark-gray);
+    color: var(--spotify-white);
+    border-radius: 8px;
+    border: none;
+  }
+  
+  .modal-header {
+    border-bottom: 1px solid var(--spotify-medium-gray);
+  }
+  
+  .modal-header .close {
+    color: var(--spotify-white);
+  }
+  
+  .modal-footer {
+    border-top: 1px solid var(--spotify-medium-gray);
+  }
+  
+  /* List Group */
+  .list-group-item {
+    background-color: var(--spotify-dark-gray);
+    border-color: var(--spotify-medium-gray);
+    color: var(--spotify-white);
+  }
+  
+  /* Music Item Card */
+  .music-item-card {
+    display: flex;
+    align-items: center;
+    background-color: var(--spotify-medium-gray);
+    padding: 0.75rem;
+    border-radius: 4px;
+    margin-bottom: 0.75rem;
+    transition: all 0.2s ease;
+  }
+  
+  .music-item-card:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .music-item-img {
+    width: 50px;
+    height: 50px;
+    background-color: var(--spotify-black);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1rem;
+  }
+  
+  .music-item-info {
+    flex-grow: 1;
+  }
+  
+  .music-item-price {
+    font-weight: 700;
+    color: var(--spotify-white);
+  }
+  
+  /* Order Summary Box */
+  .order-total-card {
+    position: sticky;
+    top: 1rem;
+  }
+  
+  /* Order Confirmation Success */
+  .order-success-icon {
+    width: 80px;
+    height: 80px;
+    background-color: var(--spotify-green);
+    color: var(--spotify-black);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    margin: 0 auto 1.5rem;
+  }
+  
+  /* Spinners */
+  .spinner-border {
+    color: var(--spotify-green);
+  }
+  
+  /* Payment Option Cards */
+  .payment-option {
+    padding: 1rem;
+    border-radius: 6px;
+    border: 1px solid var(--spotify-medium-gray);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .payment-option.selected {
+    border-color: var(--spotify-green);
+    background-color: rgba(29, 185, 84, 0.1);
+  }
+  
+  .payment-option:hover {
+    background-color: var(--spotify-medium-gray);
+  }
+  
+  /* Cart items rows */
+  .cart-item-row {
+    transition: all 0.2s ease;
+    padding: 0.75rem 0;
+  }
+  
+  .cart-item-row:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+  
+  /* Custom Spotify-inspired scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: var(--spotify-black);
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: var(--spotify-medium-gray);
+    border-radius: 4px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--spotify-light-gray);
+  }
+  
+  /* Order Confirmation specific styling */
+  .order-confirmation {
+    background-color: var(--spotify-black);
+    color: var(--spotify-white);
+  }
+  
+  .track-list {
+    background-color: var(--spotify-dark-gray);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .track-item {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--spotify-medium-gray);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .track-item:last-child {
+    border-bottom: none;
+  }
+  
+  .track-item:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+  
+  /* Added Spotify icon styling */
+  .icon-spotify {
+    color: var(--spotify-green);
+    font-size: 1.25rem;
+    margin-right: 0.5rem;
+  }
+  
+  /* Loading overlay */
+  .loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;      
+    align-items: center;
+    justify-content: center;
+    z-index: 1050;
+  }
+  
+  .loading-spinner-container {
+    background-color: var(--spotify-dark-gray);
+    padding: 2rem;
+    border-radius: 8px;
+    text-align: center;
+  }
+  

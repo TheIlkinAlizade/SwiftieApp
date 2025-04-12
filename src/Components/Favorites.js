@@ -6,9 +6,26 @@ import Navbar from "./Navbar";
 const CLIENT_ID = "5ed04eb65f1e4eb9bf0de8ec5418111f";
 const CLIENT_SECRET = "d9785a1ad1e246edb7480e256469671c";
 
+const languages = {
+  az: {
+    favtitle: "-nın sevimliləri",
+    favAlboms: "Sevimli Albomlarım",
+    favTracks: "Sevimli Mahnılarım",
+  },
+  en: {
+    favtitle: "'s Favorites",
+    favAlboms: "Favorite Albums",
+    favTracks: "Favorite Tracks",
+  }
+};
+
 const Favorites = ({ token }) => {
   const [favorites, setFavorites] = useState({ albums: [], tracks: [] });
   const [accessToken, setAccessToken] = useState(null);
+  const AzerbaijanLang = languages.az;  
+  const EnglishLang = languages.en;
+  const [language, setLanguage] = useState(() => sessionStorage.getItem('language') || 'AZ');
+  const [currentLang, setCurrentLang] = useState(language === "AZ" ? AzerbaijanLang : EnglishLang);
 
   useEffect(() => {
     async function fetchAccessToken() {
@@ -122,13 +139,21 @@ const Favorites = ({ token }) => {
       tracks: prev.tracks.filter((track) => track.id !== id),
     }));
   }
+  const [darkTheme, setDarkTheme] = useState(localStorage.getItem("theme") === "dark" || !localStorage.getItem("theme"));
+  const [darkMode, setDarkMode] = useState(localStorage.getItem("theme") === "dark" || false);
+  useEffect(() => {
+    // Apply theme to body
+    document.body.style.backgroundColor = darkTheme ? "#121212" : "#ffffff";
+    document.body.style.color = darkTheme ? "#fff" : "#191414 !important";
+    localStorage.setItem("theme", darkTheme ? "dark" : "light");
+  }, [darkTheme]);
 
   return (
     <div className="containerItems">
       <Navbar></Navbar>
-      <h2>{token?.user?.user_metadata?.full_name}'s Favorites</h2>
+      <h2>{token?.user?.user_metadata?.full_name}{currentLang.favtitle}</h2>
 
-      <h3 className="titleFav">Favorite Albums</h3>
+      <h3 className="titleFav">{currentLang.favAlboms}</h3>
       <div className="cards">
         {favorites.albums.map((album) => (
           <div className="card" key={album.id} style={{ margin: "10px", padding: "10px" }}>
@@ -144,7 +169,7 @@ const Favorites = ({ token }) => {
         ))}
       </div>
 
-      <h3 className="titleFav">Favorite Tracks</h3>
+      <h3 className="titleFav">{currentLang.favTracks}</h3>
       <div className="cards">
         {favorites.tracks.map((track) => (
           <div className="card" key={track.id} style={{ margin: "10px", padding: "10px" }}>

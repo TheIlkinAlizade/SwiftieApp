@@ -1,7 +1,7 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { supabase } from '../client';
 import { Link, useNavigate } from 'react-router-dom';
+import '../signin.css';
 
 const Login = ({ setToken }) => {
   let navigate = useNavigate();
@@ -11,13 +11,13 @@ const Login = ({ setToken }) => {
     password: ''
   });
 
+  const [showPassword, setShowPassword] = useState(false);
+
   function handleChange(event) {
-    setFormData((prevFormData) => {
-      return {
-        ...prevFormData,
-        [event.target.name]: event.target.value
-      };
-    });
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [event.target.name]: event.target.value
+    }));
   }
 
   async function handleSubmit(e) {
@@ -36,94 +36,49 @@ const Login = ({ setToken }) => {
   }
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh',
-        background: '#121212',
-        color: 'white'
-      }}
-    >
-      <div
-        style={{
-          backgroundColor: '#000000',
-          padding: '40px',
-          borderRadius: '8px',
-          width: '100%',
-          maxWidth: '400px',
-          textAlign: 'center',
-          boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)'
-        }}
-      >
-        <h1
-          style={{
-            color: 'white',
-            marginBottom: '20px',
-            fontSize: '32px',
-            fontWeight: 'bold',
-            letterSpacing: '2px'
-          }}
-        >
-          Login
-        </h1>
+    <div className='signcontainer'>
+      <div className='wrapper'>
         <form onSubmit={handleSubmit}>
-          <input
-            placeholder='Email'
-            name='email'
-            onChange={handleChange}
-            type='email'
-            style={{
-              width: '100%',
-              padding: '12px 16px',
-              marginBottom: '15px',
-              borderRadius: '4px',
-              border: '1px solid #333',
-              backgroundColor: '#2a2a2a',
-              color: 'white',
-              fontSize: '16px'
-            }}
-          />
-          <input
-            placeholder='Password'
-            name='password'
-            onChange={handleChange}
-            type='password'
-            style={{
-              width: '100%',
-              padding: '12px 16px',
-              marginBottom: '20px',
-              borderRadius: '4px',
-              border: '1px solid #333',
-              backgroundColor: '#2a2a2a',
-              color: 'white',
-              fontSize: '16px'
-            }}
-          />
-          <button
-            type='submit'
-            style={{
-              backgroundColor: '#1DB954',
-              width: '100%',
-              padding: '12px',
-              border: 'none',
-              borderRadius: '4px',
-              fontSize: '16px',
-              color: 'white',
-              cursor: 'pointer',
-              fontWeight: 'bold'
-            }}
-          >
-            Sign in
-          </button>
+          <h1>Login</h1>
+          <div className="input-box">
+            <input
+              placeholder='Email'
+              name='email'
+              onChange={handleChange}
+              type='email'
+              value={formData.email}
+            />
+          </div>
+          <div className="input-box">
+            <input
+              placeholder='Password'
+              name='password'
+              onChange={handleChange}
+              type={showPassword ? 'text' : 'password'}
+              value={formData.password}
+            />
+          </div>
+          <div className="remember-forgot">
+            <label><input type="checkbox" /> Remember me</label>
+            <a href="/go">Forgot password?</a>
+          </div>
+          <div className="show-password">
+            <label>
+              <input
+                type="checkbox"
+                checked={showPassword}
+                onChange={() => setShowPassword((prev) => !prev)}
+              /> Show password
+            </label>
+          </div>
+          <button type='submit' className='btn'>Sign in</button>
+          <div className="register-link">
+            <p>
+              Don't have an account? <Link to='/register'>Register</Link><br />
+              <Link to='/'>Main Page</Link><br />
+            </p>
+          </div>
         </form>
-        <p style={{ marginTop: '20px' }}>
-          Don't have an account?{' '}
-          <Link to='/register' style={{ color: '#1DB954', textDecoration: 'none' }}>
-            Register
-          </Link>
-        </p>
       </div>
     </div>
   );
